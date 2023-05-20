@@ -1,5 +1,6 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import ComplexNavbar from './navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className}`}>
+        <div className='w-full py-2 my-4'>
+        <ComplexNavbar/>
+        </div>  
+        {children}
+      </body>
     </html>
   )
 }
