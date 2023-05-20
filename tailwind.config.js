@@ -13,11 +13,25 @@ module.exports = withMT({
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
+  daisyui: {
+    themes: [{
+      mytheme: {
+
+        "primary": "#132da0",
+        "secondary": "#e3f2ff",
+        "accent": "#2d68ff",
+        "neutral": "#f7f7fc",
+        "base-100": "#ffffff",
+        "info": "#3ABFF8",
+        "success": "#36D399",
+        "warning": "#ffa800",
+        "error": "#dc2c2b",
+      },
+    }, ],
+  },
   plugins: [require("daisyui")],
 });
-
