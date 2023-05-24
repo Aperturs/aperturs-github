@@ -239,7 +239,7 @@ function NavList() {
 
 function LoginAndSignUpButton() {
   return (
-    <div className="flex   gap-4 lg:gap-6">
+    <div className="flex   gap-4 lg:gap-6"  >
       <button className="btn">Login</button>
       <button className="btn btn-outline btn-primary">Sign Up</button>
     </div>

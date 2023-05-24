@@ -12,6 +12,11 @@ const apertursAccount = {
   ) {
     return await account.create(ID.unique(), email, password, name);
   },
+  async logout() {
+    return await account.deleteSessions();
+    // Redirect to the homepage or login page
+  },
+
   async loginWithEmailAndPassword(email: string, password: string) {
     await account.createEmailSession(email, password);
     return await account.get();
