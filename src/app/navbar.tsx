@@ -28,6 +28,7 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
+import { useAccount } from "@/hooks/useAccount";
 
 // profile menu component
 const profileMenuItems = [
@@ -57,6 +58,7 @@ function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
 
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -74,9 +76,8 @@ function ProfileMenu() {
           />
           <ChevronDownIcon
             strokeWidth={2.5}
-            className={`h-3 w-3 transition-transform ${
-              isMenuOpen ? "rotate-180" : ""
-            }`}
+            className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+              }`}
           />
         </Button>
       </MenuHandler>
@@ -87,11 +88,10 @@ function ProfileMenu() {
             <MenuItem
               key={label}
               onClick={closeMenu}
-              className={`flex items-center gap-2 rounded ${
-                isLastItem
-                  ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                  : ""
-              }`}
+              className={`flex items-center gap-2 rounded ${isLastItem
+                ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                : ""
+                }`}
             >
               {React.createElement(icon, {
                 className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
@@ -165,9 +165,8 @@ function NavListMenu() {
               <Square3Stack3DIcon className="h-[18px] w-[18px]" /> Pages{" "}
               <ChevronDownIcon
                 strokeWidth={2}
-                className={`h-3 w-3 transition-transform ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}
+                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                  }`}
               />
             </MenuItem>
           </Typography>
@@ -238,9 +237,19 @@ function NavList() {
   );
 }
 
+function LoginAndSignUpButton() {
+  return (
+    <div className="flex   gap-4 lg:gap-6">
+      <button className="btn">Login</button>
+      <button className="btn btn-outline btn-primary">Sign Up</button>
+    </div>
+  )
+
+}
 export default function ComplexNavbar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
+  const { isAuthenticated } = useAccount()
 
   React.useEffect(() => {
     window.addEventListener(
@@ -252,12 +261,12 @@ export default function ComplexNavbar() {
   return (
     <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-xl lg:pl-6">
       <div className="relative mx-auto flex items-center text-blue-gray-900">
-        <Image 
-        src={'/logo.svg'}
-        width={40}
-        height={40}
-        alt='Aperturs Logo'
-        className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
+        <Image
+          src={'/logo.svg'}
+          width={40}
+          height={40}
+          alt='Aperturs Logo'
+          className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
         />
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />
@@ -271,7 +280,10 @@ export default function ComplexNavbar() {
         >
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
-        <ProfileMenu />
+        {
+
+          isAuthenticated ? <ProfileMenu /> : <LoginAndSignUpButton />
+        }
       </div>
       <MobileNav open={isNavOpen} className="overflow-scroll">
         <NavList />
