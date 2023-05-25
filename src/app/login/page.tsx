@@ -1,17 +1,16 @@
-"use client"
+"use client";
 
 
-import { useAccount } from "@/hooks/useAccount";
-import { useRouter } from "next/router";
+
 import React, { useState } from "react";
-import { log } from "util";
+import { useAccount } from "@/hooks/useAccount";
 
-const Login = () => {
+export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { loginWithEmailAndPassword, loading,success } = useAccount()
-    const router = useRouter()
-    
+    const { loginWithEmailAndPassword, loading, success } = useAccount()
+
+
     return (
         <div className="h-screen md:flex">
             <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -96,8 +95,8 @@ const Login = () => {
                         className={`block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${loading ? "loading" : ""}`}
                         onClick={async () => {
                             await loginWithEmailAndPassword(email, password)
-                            if(success){
-                                router.push("/dashboard")
+                            if (success) {
+                                alert("Login Successfull")
                             }
                         }}
                     >
@@ -112,5 +111,3 @@ const Login = () => {
 
     );
 };
-
-export default Login;
