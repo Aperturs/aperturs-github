@@ -31,31 +31,36 @@ import {
 import { useAccount } from "@/hooks/useAccount";
 
 // profile menu component
-const profileMenuItems = [
-  {
-    label: "My Profile",
-    icon: UserCircleIcon,
-  },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-  },
-  {
-    label: "Inbox",
-    icon: InboxArrowDownIcon,
-  },
-  {
-    label: "Help",
-    icon: LifebuoyIcon,
-  },
-  {
-    label: "Sign Out",
-    icon: PowerIcon,
-  },
-];
+
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { logout } = useAccount()
+  const profileMenuItems = [
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+    },
+    {
+      label: "Edit Profile",
+      icon: Cog6ToothIcon,
+    },
+    {
+      label: "Inbox",
+      icon: InboxArrowDownIcon,
+    },
+    {
+      label: "Help",
+      icon: LifebuoyIcon,
+    },
+    {
+      label: "Sign Out",
+      icon: PowerIcon,
+      onClick: () => {
+        logout()
+      }
+    },
+  ];
   const closeMenu = () => setIsMenuOpen(false);
 
 
@@ -82,12 +87,20 @@ function ProfileMenu() {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon }, key) => {
+        {profileMenuItems.map(({ label, icon, onClick }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={
+                () => {
+                  if (onClick) {
+                    onClick()
+                  }
+                  closeMenu()
+                }
+
+              }
               className={`flex items-center gap-2 rounded ${isLastItem
                 ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
                 : ""
