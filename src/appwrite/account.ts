@@ -8,9 +8,16 @@ const apertursAccount = {
   async signUpUserUsingEmailAndPassword(
     email: string,
     password: string,
-    name?: string
+    name: string
   ) {
-    return await account.create(ID.unique(), email, password, name);
+    const user = await account.create(ID.unique(), email, password, name);
+
+    await this.loginWithEmailAndPassword(email, password);
+    await this.sendVerificationLink(
+      `https://${window.location.hostname}/verification/${user?.$id}`
+    );
+
+    return user;
   },
   async logout() {
     return await account.deleteSessions();
@@ -32,9 +39,8 @@ const apertursAccount = {
   ) {
     return await account.updateRecovery(userId, secret, password, password);
   },
-  async sendVerificationLink() {
-    //TODO: Add verification path
-    return await account.createVerification("");
+  async sendVerificationLink(callBackUrl: string) {
+    return await account.createVerification(callBackUrl);
   },
   async verifyUserEmail(userId: string, secret: string) {
     return await account.updateVerification(userId, secret);
