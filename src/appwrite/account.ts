@@ -1,5 +1,7 @@
 import { Account, ID, Models } from "appwrite";
 import client from "./client";
+import { deleteCookie, setCookie } from "cookies-next";
+import { COOKIES } from "@/constants";
 
 const account = new Account(client);
 type User = Models.User<Models.Preferences>;
@@ -53,6 +55,8 @@ const apertursAccount = {
    * @returns {Promise<{}>}
    */
   async logout(): Promise<{}> {
+    deleteCookie(COOKIES.SESSION_ID);
+    deleteCookie(COOKIES.USER_ID);
     return await account.deleteSessions();
     // Redirect to the homepage or login page
   },
@@ -67,8 +71,11 @@ const apertursAccount = {
     email: string,
     password: string
   ): Promise<User> {
-    await account.createEmailSession(email, password);
-    return await account.get();
+    const session = await account.createEmailSession(email, password);
+    const user = await account.get();
+    setCookie(COOKIES.SESSION_ID, session.$id);
+    setCookie(COOKIES.USER_ID, user.$id);
+    return user;
   },
 
   /**
