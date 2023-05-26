@@ -1,6 +1,5 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import ComplexNavbar from './navbar'
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
@@ -20,9 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <div className='w-full py-2 my-4'>
-          <ComplexNavbar />
-        </div>
         <ToastContainer />
         {children}
       </body>
