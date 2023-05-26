@@ -4,13 +4,15 @@
 
 import React, { useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { loginWithEmailAndPassword, loading, success } = useAccount()
+    const { loginWithEmailAndPassword, loading, success, failure, error } = useAccount()
 
-
+    console.log(loading, success, failure, error, "login", "success", "failure", "error")
     return (
         <div className="h-screen md:flex">
             <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -91,13 +93,16 @@ export default function Login() {
                         />
                     </div>
                     <button
-                        type="button"
-                        className={`block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${loading ? "loading" : ""}`}
-                        onClick={async () => {
+
+                        className={` block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${loading ? "loading" : ""}`}
+                        onClick={async (event) => {
+                            event.preventDefault()
+                            console.log("fjklsjflk;sdjf;sf")
                             await loginWithEmailAndPassword(email, password)
                             if (success) {
-                                alert("Login Successfull")
+                                redirect("/dashboard")
                             }
+                            toast.success("Login Successfull")
                         }}
                     >
                         Login

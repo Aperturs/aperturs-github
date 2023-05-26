@@ -8,9 +8,6 @@ export async function middleware(request: NextRequest) {
   if (!process.env.NEXT_PUBLIC_APPWRITE_PROJECTID) {
     throw Error("NEXT_PUBLIC_APPWRITE_PROJECTID Env not found");
   }
-  if (!process.env.APPWRITE_API_KEY) {
-    throw Error("APPWRITE_API_KEY Env not found");
-  }
   const url = request.nextUrl.clone();
 
   if (
