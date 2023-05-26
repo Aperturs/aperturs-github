@@ -59,7 +59,7 @@ export default function Login() {
                         </svg>
                         <input
                             className="pl-2 outline-none border-none"
-                            type="text"
+                            type="email"
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                             name=""
@@ -84,7 +84,7 @@ export default function Login() {
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                             className="pl-2 outline-none border-none"
-                            type="text"
+                            type="password"
                             name=""
                             id=""
                             placeholder="Password"
