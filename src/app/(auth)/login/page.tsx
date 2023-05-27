@@ -4,9 +4,10 @@
 
 import React, { useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
-import { toast } from "react-toastify";
 import { redirect,useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loadingspinner";
+import toast from "react-hot-toast";
+
 
 
 
@@ -104,8 +105,15 @@ export default function Login() {
                             event.preventDefault()
                             console.log("fjklsjflk;sdjf;sf")
                             await loginWithEmailAndPassword(email, password)
+                            toast.promise(
+                                loginWithEmailAndPassword(email, password),
+                                 {
+                                   loading: 'Loggin In...',
+                                   success: <b>Logged In!</b>,
+                                   error: <b>Could not Login.</b>,
+                                 }
+                               );
                             if (success) {
-                                toast.success("Login Successfull")
                                 router.push("/dashboard")
                                 redirect("/dashboard")
                             }

@@ -29,8 +29,8 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { useAccount } from "@/hooks/useAccount";
-import { toast } from "react-toastify";
 import { redirect,useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // profile menu component
 
