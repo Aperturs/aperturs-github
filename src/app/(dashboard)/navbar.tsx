@@ -29,13 +29,16 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { useAccount } from "@/hooks/useAccount";
+import { toast } from "react-toastify";
+import { redirect,useRouter } from "next/navigation";
 
 // profile menu component
 
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { logout } = useAccount()
+  const { logout,loading } = useAccount()
+  const router = useRouter();
   const profileMenuItems = [
     {
       label: "My Profile",
@@ -58,6 +61,8 @@ function ProfileMenu() {
       icon: PowerIcon,
       onClick: () => {
         logout()
+        toast.success("Logged Out Successfull")
+        router.push("/login")
       }
     },
   ];
@@ -250,15 +255,7 @@ function NavList() {
   );
 }
 
-function LoginAndSignUpButton() {
-  return (
-    <div className="flex   gap-4 lg:gap-6"  >
-      <button className="btn">Login</button>
-      <button className="btn btn-outline btn-primary">Sign Up</button>
-    </div>
-  )
 
-}
 export default function ComplexNavbar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -293,10 +290,8 @@ export default function ComplexNavbar() {
         >
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
-        {
-
-          isAuthenticated ? <ProfileMenu /> : <LoginAndSignUpButton />
-        }
+         <ProfileMenu /> 
+        
       </div>
       <MobileNav open={isNavOpen} className="overflow-scroll">
         <NavList />

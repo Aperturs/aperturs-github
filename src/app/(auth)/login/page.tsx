@@ -5,12 +5,17 @@
 import React, { useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { redirect,useRouter } from "next/navigation";
+import { LoadingSpinner } from "@/components/loadingspinner";
+
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { loginWithEmailAndPassword, loading, success, failure, error } = useAccount()
+    const router = useRouter();
+
 
     console.log(loading, success, failure, error, "login", "success", "failure", "error")
     return (
@@ -66,7 +71,7 @@ export default function Login() {
                             onChange={(event) => setEmail(event.target.value)}
                             name=""
                             id=""
-                            placeholder="Username"
+                            placeholder="Email Address"
                         />
                     </div>
                     <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
@@ -94,18 +99,22 @@ export default function Login() {
                     </div>
                     <button
 
-                        className={` block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${loading ? "loading" : ""}`}
+                        className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${loading ? "loading" : ""}`}
                         onClick={async (event) => {
                             event.preventDefault()
                             console.log("fjklsjflk;sdjf;sf")
                             await loginWithEmailAndPassword(email, password)
                             if (success) {
+                                toast.success("Login Successfull")
+                                router.push("/dashboard")
                                 redirect("/dashboard")
                             }
-                            toast.success("Login Successfull")
+                            if (error) {
+                                toast.error(error)
+                            }
                         }}
                     >
-                        Login
+                        {loading ? <LoadingSpinner color={'blue-600'}/> : "Login"}
                     </button>
                     <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
                         Forgot Password ?
