@@ -4,13 +4,21 @@
 
 import React, { useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
+import { redirect,useRouter } from "next/navigation";
+import { LoadingSpinner } from "@/components/loadingspinner";
+import toast from "react-hot-toast";
+
+
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { loginWithEmailAndPassword, loading, success } = useAccount()
+    const { loginWithEmailAndPassword, loading, success, failure, error } = useAccount()
+    const router = useRouter();
 
 
+    console.log(loading, success, failure, error, "login", "success", "failure", "error")
     return (
         <div className="h-screen md:flex">
             <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -59,12 +67,12 @@ export default function Login() {
                         </svg>
                         <input
                             className="pl-2 outline-none border-none"
-                            type="text"
+                            type="email"
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                             name=""
                             id=""
-                            placeholder="Username"
+                            placeholder="Email Address"
                         />
                     </div>
                     <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
@@ -84,23 +92,37 @@ export default function Login() {
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                             className="pl-2 outline-none border-none"
-                            type="text"
+                            type="password"
                             name=""
                             id=""
                             placeholder="Password"
                         />
                     </div>
                     <button
-                        type="button"
-                        className={`block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${loading ? "loading" : ""}`}
-                        onClick={async () => {
+
+                        className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${loading ? "loading" : ""}`}
+                        onClick={async (event) => {
+                            event.preventDefault()
+                            console.log("fjklsjflk;sdjf;sf")
                             await loginWithEmailAndPassword(email, password)
+                            toast.promise(
+                                loginWithEmailAndPassword(email, password),
+                                 {
+                                   loading: 'Loggin In...',
+                                   success: <b>Logged In!</b>,
+                                   error: <b>Could not Login.</b>,
+                                 }
+                               );
                             if (success) {
-                                alert("Login Successfull")
+                                router.push("/dashboard")
+                                redirect("/dashboard")
+                            }
+                            if (error) {
+                                toast.error(error)
                             }
                         }}
                     >
-                        Login
+                        {loading ? <LoadingSpinner color={'blue-600'}/> : "Login"}
                     </button>
                     <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
                         Forgot Password ?

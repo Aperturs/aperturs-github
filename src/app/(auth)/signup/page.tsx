@@ -87,7 +87,7 @@ const Signup = () => {
                             onChange={(e) => {
                                 setEmail(e.target.value);
                             }}
-                            type="text"
+                            type="email"
                             name=""
                             id=""
                             placeholder="Email Address"
@@ -110,7 +110,7 @@ const Signup = () => {
                             value={password}
                             className="pl-2 outline-none border-none"
                             onChange={(event) => setPassword(event.target.value)}
-                            type="text"
+                            type="password"
                             name=""
                             id=""
                             placeholder="Password"
