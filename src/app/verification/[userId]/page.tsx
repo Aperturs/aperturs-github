@@ -8,10 +8,11 @@ export default function Page({ params }: { params: { userId: string } }) {
     useEffect(() => {
         confirmVerification()
     }, [])
-    return <div>
+    return <div> 
         Verfication about to start
         {error && <div>{error}</div>}
         {success && <div>Success</div>}
         {loading && <div>Loading....</div>}
     </div>;
 }
+

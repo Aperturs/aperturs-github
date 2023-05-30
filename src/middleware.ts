@@ -10,32 +10,46 @@ export async function middleware(request: NextRequest) {
   }
   const url = request.nextUrl.clone();
 
-  if (
-    !(
-      request.cookies.get(COOKIES.SESSION_ID) &&
-      request.cookies.get(COOKIES.USER_ID)
-    )
-  ) {
+  const isLoggedIn = (
+    request.cookies.get(COOKIES.SESSION_ID) &&
+    request.cookies.get(COOKIES.USER_ID)
+  );
+
+  if (!isLoggedIn) {
     if (request.nextUrl.pathname.startsWith("/dashboard")) {
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
-    return NextResponse.next();
-  }
-
-  if (request.nextUrl.pathname.startsWith("/login")) {
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
+    // Allow access to /login and /signup when not logged in
+    if (
+      !request.nextUrl.pathname.startsWith("/login") &&
+      !request.nextUrl.pathname.startsWith("/signup")
+    ) {
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+  } else {
+    if (
+      request.nextUrl.pathname.startsWith("/login") ||
+      request.nextUrl.pathname.startsWith("/signup")
+    ) {
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   return NextResponse.next();
 }
+
 export const config = {
   matcher: [
-    "/dashboard",
-    "/login",
-    "/signup",
-    "/forgot-password",
-    "/reset-password",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
