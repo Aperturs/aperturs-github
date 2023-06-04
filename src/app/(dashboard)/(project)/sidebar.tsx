@@ -9,29 +9,31 @@ import {
   ListItemSuffix,
   Chip,
 } from "@material-tailwind/react";
-import {
-  FiBarChart,
-  FiShoppingBag,
-  FiUser,
-  FiSettings,
-  FiInbox,
-  FiPower,
-} from "react-icons/fi";
+
 import { FaCodeBranch } from "react-icons/fa";
-import { MdDescription } from "react-icons/md";
+import {LuBrainCircuit} from 'react-icons/lu'
+import {RiDashboardFill} from 'react-icons/ri'
+import {SiGoogleanalytics} from 'react-icons/si'
+import {GiPaperTray} from 'react-icons/gi'
+import {IoMdSettings} from 'react-icons/io'
 
 const menuItems = [
+
   {
     text: "Dashboard",
-    icon: <FiBarChart className="h-5 w-5" />,
+    icon: <RiDashboardFill className="h-5 w-5" />,
   },
   {
-    text: "Commits",
-    icon: <FiShoppingBag className="h-5 w-5" />,
+    text: "Analytics",
+    icon: <SiGoogleanalytics className="h-5 w-5" />,
+  },
+  {
+    text: "GitHub Commits",
+    icon: <FaCodeBranch className="h-5 w-5" />,
   },
   {
     text: "Posts",
-    icon: <FiInbox className="h-5 w-5" />,
+    icon: <GiPaperTray className="h-5 w-5" />,
     suffix: (
       <Chip
         value="14"
@@ -44,13 +46,16 @@ const menuItems = [
   },
   {
     text: "Context",
-    icon: <FiUser className="h-5 w-5" />,
+    icon: <LuBrainCircuit className="h-5 w-5" />,
   },
+
+ 
   {
     text: "Settings",
-    icon: <FiSettings className="h-5 w-5" />,
+    icon: <IoMdSettings className="h-5 w-5" />,
   },
 ];
+
 
 export default function Sidebar() {
   return (
