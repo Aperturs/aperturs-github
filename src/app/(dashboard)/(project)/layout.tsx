@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     
       <section>
-        <div className="flex relative gap-6">
+        <div className="lg:flex relative gap-8">
         <Sidebar />
         <div>
         {children}

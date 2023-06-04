@@ -151,7 +151,6 @@ function NavList() {
 export default function ComplexNavbar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
-  const { isAuthenticated } = useAccount()
 
   React.useEffect(() => {
     window.addEventListener(
@@ -180,10 +179,11 @@ export default function ComplexNavbar() {
           onClick={toggleIsNavOpen}
           className="ml-auto mr-2 lg:hidden"
         >
-          <Bars2Icon className="h-6 w-6" />
+        <Bars2Icon className="h-6 w-6" />
         </IconButton>
         <ProfileMenu /> 
       </div>
+
       <MobileNav open={isNavOpen} className="overflow-scroll">
         <NavList />
       </MobileNav>
