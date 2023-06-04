@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -42,6 +42,7 @@ export default function TableCard() {
 
   return (
     <Card className="p-4 shadow-sm lg:w-[70vw] w-[90vw] ">
+      <Typography variant="h5">Commits</Typography>
 
       <div className="flex items-center mb-4">
         <Checkbox color="blue" onChange={toggleSelectAll} />
@@ -49,33 +50,37 @@ export default function TableCard() {
           {selectedRows.length} row(s) selected
         </Typography>
       </div>
-          <AnimatePresence>
-            {rows.map((row, index) => (
-              <motion.tr
-                key={row.id}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={staggerVariants}
-                custom={index}
-              >
-                <Card className="p-4 my-3 shadow-md cursor-pointer mx-2" onClick={()=>toggleRowSelection(row.id)}>
-                    <div className="flex items-center">
-                  <Checkbox
-                    color="blue"
-                    checked={selectedRows.includes(row.id)}
-                    onChange={() => toggleRowSelection(row.id)}
-                  />
-                <div >
-                  <Typography variant="h6" className='text-blue-gray-800 '>{row.title}</Typography>
+      <AnimatePresence>
+        {rows.map((row, index) => (
+          <motion.tr
+            key={row.id}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={staggerVariants}
+            custom={index}
+          >
+            <Card
+              className="p-4 my-3 shadow-md cursor-pointer mx-2"
+              onClick={() => toggleRowSelection(row.id)}
+            >
+              <div className="flex items-center">
+                <Checkbox
+                  color="blue"
+                  checked={selectedRows.includes(row.id)}
+                  onChange={() => toggleRowSelection(row.id)}
+                />
+                <div>
+                  <Typography variant="h6" className="text-blue-gray-800 ">
+                    {row.title}
+                  </Typography>
                   <Typography variant="body2">{row.description}</Typography>
                 </div>
-                </div>
-                </Card>
-              </motion.tr>
-            ))}
-          </AnimatePresence>
-  
+              </div>
+            </Card>
+          </motion.tr>
+        ))}
+      </AnimatePresence>
     </Card>
   );
 }
