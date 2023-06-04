@@ -6,13 +6,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+      <section>
         <div className="w-full py-2 my-4">
           <ComplexNavbar />
         </div>
         {children}
-      </body>
-    </html>
+      </section>
   );
 }

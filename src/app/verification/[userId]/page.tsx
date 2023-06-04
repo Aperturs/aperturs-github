@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 export default function Page({ params }: { params: { userId: string } }) {
     const { success, error, confirmVerification, loading } = useAccount()
-    useEffect(() => {
+    useEffect(() => { 
         confirmVerification()
     }, [])
     return <div> 

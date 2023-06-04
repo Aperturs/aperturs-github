@@ -2,19 +2,7 @@
 
 import React from "react";
 import Image from 'next/image'
-import {
-  Navbar,
-  MobileNav,
-  Typography,
-  Button,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Avatar,
-  Card,
-  IconButton,
-} from "@material-tailwind/react";
+import { Navbar,MobileNav,Typography, Button, Menu, MenuHandler,MenuList, MenuItem,Avatar,Card,IconButton,} from "@material-tailwind/react";
 import {
   CubeTransparentIcon,
   UserCircleIcon,
@@ -75,8 +63,7 @@ function ProfileMenu() {
         <Button
           variant="text"
           color="blue-gray"
-          className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
-        >
+          className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto">
           <Avatar
             variant="circular"
             size="sm"
@@ -290,8 +277,7 @@ export default function ComplexNavbar() {
         >
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
-         <ProfileMenu /> 
-        
+        <ProfileMenu /> 
       </div>
       <MobileNav open={isNavOpen} className="overflow-scroll">
         <NavList />
