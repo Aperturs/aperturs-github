@@ -122,7 +122,7 @@ export default function Login() {
               });
             }}
           >
-            {loading ? <LoadingSpinner color={"blue-600"} /> : "Login"}
+            {loading ? <LoadingSpinner color={"fill-blue-600"} /> : "Login"}
           </button>
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
             Forgot Password ?
