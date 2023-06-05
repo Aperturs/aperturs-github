@@ -3,7 +3,7 @@
 import { useAccount } from "@/hooks/useAccount";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
