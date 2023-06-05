@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   await functions.createExecution(
     "storeGithubTokens",
     JSON.stringify({
-      accessToken: data.access_token,
+      access_token: data.access_token,
       refresh_token: "",
       expires_in: 0,
       refresh_token_expeires_in: 0,
