@@ -21,7 +21,7 @@ const staggerVariants = {
   visible: (i: number) => ({ opacity: 1, transition: { delay: i * 0.1 } }),
 };
 
-export default function TableCard() {
+export default function CommitsTable() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const toggleSelectAll = () => {
