@@ -11,11 +11,7 @@ const page = () => {
     console.log("Github Connect")
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent("user repo")}`
   }
-  const onLinkedLnConnect = () => {
 
-    console.log(" linkedln Connect")
-    window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!}&redirect_uri=${process.env.NEXT_PUBLIC_LINKEDIN_REDIRECT_URL!}&scope=r_liteprofile%20r_emailaddress%20w_member_social`;
-  };
 
   return (
     <div className="w-full py-12 sm:px-28 px-10">
@@ -24,11 +20,9 @@ const page = () => {
           Your Connected Repositories
         </Typography>
         <button className="px-8  btn-primary btn text-white" onClick={onGithubConnect}>
-          Connect a new repository
+          Connect new Repo
         </button>
-        <button className="px-8  btn-primary btn text-white" onClick={onLinkedLnConnect}>
-          Connect to linkedln
-        </button>
+    
 
       </div>
       <div className="flex flex-row gap-4">
