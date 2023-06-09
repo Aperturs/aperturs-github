@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
       access_token: data.access_token,
       refresh_token: "",
       expires_in: 0,
-      refresh_token_expeires_in: 0,
+      refresh_token_expires_in: 0,
       userId: userId?.value,
     })
   );

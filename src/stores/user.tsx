@@ -1,5 +1,5 @@
 
-import { Models } from "appwrite"
+import { Models, ID } from "appwrite"
 import { create } from 'zustand';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
 type UserState = {
@@ -7,6 +7,7 @@ type UserState = {
     setUser: (user: Models.User<Models.Preferences>) => void;
 
 }
+
 const useUserStore = create(persist<UserState>(
     (set, get) => ({
         user: null,
