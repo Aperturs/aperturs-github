@@ -14,6 +14,7 @@ import {HiQueueList} from 'react-icons/hi2'
 import { useAccount } from "@/hooks/useAccount";
 import { redirect,useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import router from "next/router";
 
 // profile menu component
 
@@ -27,10 +28,16 @@ function ProfileMenu() {
     {
       label: "My Profile",
       icon: IoMdContact,
+      onClick: () => {
+        router.push("/profile");
+      }
     },
     {
-      label: "Edit Profile",
+      label: "Settings",
       icon: BsFillGearFill,
+      onClick: () => {
+        router.push("/settings");
+      }
     },
     {
       label: "Notifications",
@@ -39,6 +46,9 @@ function ProfileMenu() {
     {
       label: "Help",
       icon: IoHelpBuoy,
+      onClick: () => {
+        router.push("/help");
+      }
     },
     {
       label: "Sign Out",
@@ -111,27 +121,43 @@ function ProfileMenu() {
 
 
 
-const navListItems = [
-  {
-    label: "Projects",
-    icon: BsFileCodeFill,
-  },
-  {
-    label: "All Posts",
-    icon: IoFileTrayStacked,
-  },
-  {
-    label: "Queue",
-    icon: HiQueueList,
-  },
-];
+
 
 function NavList() {
+
+  const router = useRouter();
+
+  const navListItems = [
+    {
+      label: "Projects",
+      icon: BsFileCodeFill,
+      onClick: () => {
+        router.push("/projects");
+      }
+    },
+    {
+      label: "All Posts",
+      icon: IoFileTrayStacked,
+      onClick: () => {
+        router.push("/posts");
+      }
+    },
+    {
+      label: "Queue",
+      icon: HiQueueList,
+      onClick: () => {
+        router.push("/queue");
+      }
+    },
+  ];
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-      {navListItems.map(({ label, icon }, key) => (
+      {navListItems.map(({ label, icon,onClick }, key) => (
         <Typography
           key={label}
+          onClick={() => {
+            onClick();
+          }}
           as="a"
           href="#"
           variant="small"
