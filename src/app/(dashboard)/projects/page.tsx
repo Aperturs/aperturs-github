@@ -12,7 +12,6 @@ const page = () => {
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent("user repo")}`
   }
 
-
   return (
     <div className="w-full py-12 sm:px-28 px-10">
       <div className="w-full flex mb-6 justify-between">
