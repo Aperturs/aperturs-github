@@ -66,7 +66,7 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div >
       <Slate
         editor={editor}
         initialValue={value}
@@ -77,8 +77,8 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
           className="text-sm bg-transparent p-2 rounded resize-none overflow-hidden"
           placeholder="Write your post here..."
           style={{
-            minHeight: "100px",
-            maxHeight: "200px",
+            minHeight: "300px",
+            maxHeight: "700px",
             lineHeight: "1.5",
             border: "none",
             outline: "none",
@@ -87,7 +87,7 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
         />
         <div className="mt-2 flex justify-between items-center">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="btn btn-primary text-white px-8 py-2"
             onClick={handleSubmit}
           >
             Post
