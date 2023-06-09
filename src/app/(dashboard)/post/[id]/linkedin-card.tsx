@@ -1,9 +1,6 @@
-// LinkedInPostCreation.tsx
-import React, { useMemo, useState, useRef, useEffect, forwardRef } from "react";
-import { createEditor, Descendant } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
-
-  
+import React, { useCallback, useMemo, useState, forwardRef } from "react";
+import { createEditor, Descendant, Editor as BaseEditor, Text as BaseText } from "slate";
+import { Slate, Editable, withReact, ReactEditor, RenderLeafProps as BaseRenderLeafProps } from "slate-react";
 
 interface LinkedInPostCreationProps {
   onPostSubmit: (content: Descendant[]) => void;
@@ -15,10 +12,24 @@ type ParagraphElement = {
   children: { text: string }[];
 };
 
+interface Editor extends BaseEditor, ReactEditor {
+  isActive: (format: string) => boolean;
+  chain: () => any;
+}
+
+interface Text extends BaseText {
+  bold?: boolean;
+  link?: string;
+}
+
+interface RenderLeafProps extends BaseRenderLeafProps {
+  leaf: Text;
+}
+
 const createParagraph = (text: string): ParagraphElement => ({
-    type: "paragraph",
-    children: [{ text }],
-  });
+  type: "paragraph",
+  children: [{ text }],
+});
 
 const TextareaWithRef = forwardRef<HTMLDivElement, any>((props, ref) => (
   <Editable ref={ref} {...props} />
@@ -28,38 +39,31 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
   onPostSubmit,
   value: initialValue,
 }) => {
-  const editor = useMemo(() => withReact(createEditor()), []);
+  const editor = useMemo(() => withReact(createEditor()) as Editor, []);
   const [value, setValue] = useState<Descendant[]>(initialValue || [createParagraph("")]);
-  
-  
 
-  const editableRef = useRef<HTMLDivElement | null>(null);
+  const toggleLinkMark = (url: string) => {
+    editor.chain().focus().wrapLink(url).run();
+  };
 
-  useEffect(() => {
-    const handleInput = () => {
-        if (editableRef.current) {
-          const { selection } = editor;
-          const lines = editableRef.current.innerText.split("\n");
-          if (lines.length >= 7) {
-            lines.splice(4, 2, "-----> show more");
-            editableRef.current.innerText = lines.join("\n");
-            if (selection) {
-              editor.selection = selection;
-            }
-          }
-        }
-      };
-      
-    if (editableRef.current) {
-      editableRef.current.addEventListener("input", handleInput);
+  const renderLeaf = useCallback(({ attributes, children, leaf }: RenderLeafProps) => {
+    if (leaf.bold) {
+      return <strong {...attributes}>{children}</strong>;
+    }
+    if (leaf.link) {
+      return (
+        <a href={leaf.link} {...attributes}>
+          {children}
+        </a>
+      );
     }
 
-    return () => {
-      if (editableRef.current) {
-        editableRef.current.removeEventListener("input", handleInput);
-      }
-    };
+    return <span {...attributes}>{children}</span>;
   }, []);
+
+  const handleSubmit = () => {
+    onPostSubmit(value);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -69,11 +73,12 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
         onChange={(newValue) => setValue(newValue)}
       >
         <TextareaWithRef
+          renderLeaf={renderLeaf}
           className="text-sm bg-transparent p-2 rounded resize-none overflow-hidden"
           placeholder="Write your post here..."
           style={{
             minHeight: "100px",
-            maxHeight: "600px",
+            maxHeight: "200px",
             lineHeight: "1.5",
             border: "none",
             outline: "none",
@@ -81,12 +86,9 @@ const LinkedInPostCreation: React.FC<LinkedInPostCreationProps> = ({
           }}
         />
         <div className="mt-2 flex justify-between items-center">
-          <div className="flex space-x-2">
-            {/* Add your icons here */}
-          </div>
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded"
-            onClick={() => onPostSubmit(value)}
+            onClick={handleSubmit}
           >
             Post
           </button>
