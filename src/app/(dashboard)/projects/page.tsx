@@ -13,7 +13,7 @@ const page = () => {
   }
 
   return (
-    <div className="w-full py-12 sm:px-28 px-10">
+    <div className="w-full py-12 ">
       <div className="w-full flex mb-6 justify-between">
         <Typography variant="h3" className="">
           Your Connected Repositories
