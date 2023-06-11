@@ -102,24 +102,26 @@ export default function Login() {
             />
           </div>
           <button
-            className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${
-              loading ? "loading" : ""
-            }`}
+            className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${loading ? "loading" : ""
+              }`}
             onClick={async (event) => {
               event.preventDefault();
               console.log("fjklsjflk;sdjf;sf");
-              await loginWithEmailAndPassword(email, password).then((res) => {
-                console.log(res);
-                if (success) {
-                  toast.promise(loginWithEmailAndPassword(email, password), {
-                    loading: "Loggin In...",
-                    success: <b>Logged In!</b>,
-                    error: <b>Could not Login.</b>,
-                  });
-                  router.push("/projects"), redirect("/projects");
-                }
-                if (failure) toast.error(`Could not Login. ${error}`);
-              });
+              toast.promise(loginWithEmailAndPassword(email, password), {
+                loading: "Loggin In...",
+                success: <b>Logged In!</b>,
+                error: <b>Could not Login.</b>,
+              }).then(() => {
+                router.push("/projects")
+                redirect("/projects")
+              })
+                .catch((err) => {
+                  if (failure) {
+                    toast.error(`Could not Login. ${err}`)
+                  }
+
+                });
+
             }}
           >
             {loading ? <LoadingSpinner color={"fill-blue-600"} /> : "Login"}

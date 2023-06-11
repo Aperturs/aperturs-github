@@ -38,7 +38,7 @@ export const useAccount = () => {
                 useUserStore.setState({ user: newUser });
             }
         });
-        setLoading(isAPICallLoading);
+        setLoading(false);
     };
 
     /**
@@ -49,7 +49,7 @@ export const useAccount = () => {
         await wrapAPICall(async () => apertursAccount.logout()).then(() => {
             useUserStore.setState({ user: null });
         });
-        setLoading(isAPICallLoading);
+        setLoading(false);
     };
 
     /**
@@ -69,7 +69,7 @@ export const useAccount = () => {
         ).then((newUser) => {
             useUserStore.setState({ user: newUser });
         });
-        setLoading(isAPICallLoading);
+        setLoading(false);
     };
 
     /**
