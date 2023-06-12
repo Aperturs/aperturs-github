@@ -9,6 +9,7 @@ import Select, { OptionProps } from 'react-select';
 
 import { useGithub } from "@/hooks/useGithub";
 import { Repo } from "@/types/github";
+import { useRouter, useSearchParams } from "next/navigation";
 type RepoOptionType = {
   value: Repo,
   label: string
@@ -52,6 +53,7 @@ const NewRepoFormModal = () => {
       setOptions(repoOptions)
     })
   }, [])
+  const [count, setCount] = useState(0)
 
   return (
 
@@ -64,23 +66,24 @@ const NewRepoFormModal = () => {
         <DialogBody divider>
           {loading ? <Spinner className="h-12 w-12" /> :
             <>
-              <label className="swap swap-flip text-9xl">
+              {count == 0 &&
+                <div className="w-full">
+                  <Select
+                    formatOptionLabel={RepoOption}
+                    value={option}
+                    options={options}
+                    onChange={value => setOption(value as any)}
 
-                {/* this hidden checkbox controls the state */}
+                  />
+                </div>
+              }
+              {count == 1 &&
+                <div className="w-full">
+                  <div>
 
+                  </div>
+                </div>}
 
-                <div className="swap-on">😈</div>
-                <div className="swap-off"> <Select
-                  formatOptionLabel={RepoOption}
-                  value={option}
-                  options={options}
-                  onChange={value => setOption(value as any)}
-
-                /></div>
-              </label>
-              <div className="w-full">
-
-              </div>
 
             </>}
 
@@ -130,7 +133,14 @@ const ConnnectionButton = () => {
   </>)
 }
 const page = () => {
-
+  const searchParams = useSearchParams()
+  const { refreshUser } = useUser()
+  useEffect(() => {
+    const isRefreshUser = searchParams.get("refreshUser")
+    if (isRefreshUser) {
+      refreshUser()
+    }
+  }, [])
   return (
     <div className="w-full py-12 ">
       <div className="w-full flex mb-6 justify-between">
