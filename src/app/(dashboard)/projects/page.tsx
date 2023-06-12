@@ -63,15 +63,26 @@ const NewRepoFormModal = () => {
         <DialogHeader>Select your Repo ....</DialogHeader>
         <DialogBody divider>
           {loading ? <Spinner className="h-12 w-12" /> :
-            <div className="w-full">
-              <Select
-                formatOptionLabel={RepoOption}
-                value={option}
-                options={options}
-                onChange={value => setOption(value as any)}
+            <>
+              <label className="swap swap-flip text-9xl">
 
-              />
-            </div>}
+                {/* this hidden checkbox controls the state */}
+
+
+                <div className="swap-on">😈</div>
+                <div className="swap-off"> <Select
+                  formatOptionLabel={RepoOption}
+                  value={option}
+                  options={options}
+                  onChange={value => setOption(value as any)}
+
+                /></div>
+              </label>
+              <div className="w-full">
+
+              </div>
+
+            </>}
 
         </DialogBody>
         <DialogFooter>
