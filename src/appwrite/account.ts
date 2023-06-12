@@ -120,6 +120,13 @@ const apertursAccount = {
   async verifyUserEmail(userId: string, secret: string): Promise<Models.Token> {
     return await account.updateVerification(userId, secret);
   },
+  /**
+   * Gets the user's account.
+   * @returns {Promise<Models.User<Models.Preferences>>}
+   */
+  async getAccount(): Promise<Models.User<Models.Preferences>> {
+    return await account.get();
+  },
 };
 
 Object.freeze(apertursAccount);

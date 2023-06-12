@@ -1,17 +1,19 @@
 
-import { Models, ID } from "appwrite"
+
+import { UserDoc } from '@/types/user';
 import { create } from 'zustand';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
-type UserState = {
-    user: Models.User<Models.Preferences> | null;
-    setUser: (user: Models.User<Models.Preferences>) => void;
+
+type UserStoreState = {
+    user: UserDoc | null;
+    setUser: (user: UserDoc) => void;
 
 }
 
-const useUserStore = create(persist<UserState>(
+const useUserStore = create(persist<UserStoreState>(
     (set, get) => ({
         user: null,
-        setUser: (user: Models.User<Models.Preferences>) => set({ user }),
+        setUser: (user: UserDoc) => set({ user }),
     }),
 
     {
