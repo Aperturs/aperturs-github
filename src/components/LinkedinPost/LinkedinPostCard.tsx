@@ -1,12 +1,17 @@
 import { Avatar } from '@material-tailwind/react'
 import React, { useState } from 'react'
 import LinkedInPostCreation from './textarea'
+import DateTimePicker from './datepicker';
 
 function LinkedinPostCard() {
   const [content, setContent] = useState('');
     const handlePostSubmit = (content: string) => {
         console.log("Post content:", content);
         alert("Post content: " + content);
+      };
+      const handleDate = (date: Date, time: Date) => {
+        console.log('Selected Date:', date);
+        console.log('Selected Time:', time);
       };
 
   return (
@@ -27,11 +32,15 @@ function LinkedinPostCard() {
         content={content}
         onContentChange={setContent}
         />
+        <div>
+        <DateTimePicker onButtonClick={handleDate} />
         <button className='btn btn-primary px-8 text-white'
         onClick={() => handlePostSubmit(content)}
         >
           Post
         </button>
+        </div>
+
       </div>
   )
 }
