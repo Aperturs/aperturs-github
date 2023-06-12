@@ -1,16 +1,21 @@
 "use client";
 
 import { useAccount } from "@/hooks/useAccount";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
-    const { signUpUsingEmailAndPassword, loading, error, success } = useAccount()
-
+    const { signUpUsingEmailAndPassword, loading, error, success, failure } = useAccount()
+    useEffect(() => {
+        if (failure) {
+            toast.error(`Could Not Sign Up due to the Error , ${error}`)
+        }
+    }, [failure])
+    const router = useRouter()
 
 
     return (
@@ -120,11 +125,15 @@ const Signup = () => {
                         type="button"
                         className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
                         onClick={async () => {
-                            await signUpUsingEmailAndPassword(email, password, name)
-                            if (success) {
-                                alert("Sign up done check your email for verification")
-                            }
-                            toast.success("Account Created Successfully Check email for verification")
+                            toast.promise(signUpUsingEmailAndPassword(email, password, name), {
+                                loading: "Creating  Account...",
+                                success: <b>Check Your Email for Email Verification </b>,
+                                error: <b>Could not SIgnUp </b>,
+                            }).then(() => {
+                                router.push("/projects")
+                            })
+
+
 
                         }}
                     >

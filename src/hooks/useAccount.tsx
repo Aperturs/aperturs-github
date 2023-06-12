@@ -31,14 +31,20 @@ export const useAccount = () => {
         password: string
     ): Promise<void> => {
         setLoading(true);
-        await wrapAPICall(async () =>
-            apertursAccount.loginWithEmailAndPassword(email, password)
-        ).then((newUser) => {
-            if (newUser) {
-                useUserStore.setState({ user: newUser });
-            }
-        });
-        setLoading(isAPICallLoading);
+        try {
+            await wrapAPICall(async () =>
+                apertursAccount.loginWithEmailAndPassword(email, password)
+            ).then((newUser) => {
+                if (newUser) {
+                    useUserStore.setState({ user: newUser });
+                }
+            });
+        } catch (e) {
+            throw e;
+        }
+        finally {
+            setLoading(false);
+        }
     };
 
     /**
@@ -46,10 +52,17 @@ export const useAccount = () => {
      */
     const logout = async (): Promise<void> => {
         setLoading(true);
-        await wrapAPICall(async () => apertursAccount.logout()).then(() => {
-            useUserStore.setState({ user: null });
-        });
-        setLoading(isAPICallLoading);
+        try {
+            await wrapAPICall(async () => apertursAccount.logout()).then(() => {
+                useUserStore.setState({ user: null });
+            });
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            setLoading(false);
+        }
     };
 
     /**
@@ -64,12 +77,19 @@ export const useAccount = () => {
         name: string
     ): Promise<void> => {
         setLoading(true);
-        await wrapAPICall(async () =>
-            apertursAccount.signUpUserUsingEmailAndPassword(email, password, name)
-        ).then((newUser) => {
-            useUserStore.setState({ user: newUser });
-        });
-        setLoading(isAPICallLoading);
+        try {
+            await wrapAPICall(async () =>
+                apertursAccount.signUpUserUsingEmailAndPassword(email, password, name)
+            ).then((newUser) => {
+                useUserStore.setState({ user: newUser });
+            });
+        }
+        catch (err) {
+            throw err;
+        }
+        finally {
+            setLoading(false);
+        }
     };
 
     /**
@@ -77,13 +97,21 @@ export const useAccount = () => {
      */
     const confirmVerification = async (): Promise<void> => {
         setLoading(true);
-        const userId = searchParams.get("userId");
-        const secret = searchParams.get("secret");
-        await wrapAPICall(async () => {
-            if (!userId || !secret) return Error("Invalid URL");
-            return apertursAccount.verifyUserEmail(userId as string, secret as string);
-        });
-        setLoading(false);
+        try {
+            const userId = searchParams.get("userId");
+            const secret = searchParams.get("secret");
+            await wrapAPICall(async () => {
+                if (!userId || !secret) return Error("Invalid URL");
+                return apertursAccount.verifyUserEmail(userId as string, secret as string);
+            });
+        } catch (err) {
+            throw err;
+        }
+        finally {
+
+
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -102,7 +130,7 @@ export const useAccount = () => {
         user,
         isAuthenticated,
         error: APICallError,
-        loading: loading || isAPICallLoading,
+        loading: loading,
         success: isAPICallSuccess,
         failure: isAPICallFailure,
     };

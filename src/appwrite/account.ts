@@ -44,9 +44,8 @@ const apertursAccount = {
 
     await this.loginWithEmailAndPassword(email, password);
     await this.sendVerificationLink(
-      `https://${window.location.hostname}/verification/${user?.$id}`
+      `${process.env.NEXT_PUBLIC_EMAIL_VERIFCATION_URL}/${user?.$id}`
     );
-
     return user;
   },
 
