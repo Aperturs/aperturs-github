@@ -1,48 +1,72 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { FC,useState } from 'react';
 
-interface TimePickerProps {
-  // Add any additional props you may need
+type time ={
+  hours: number;
+  minutes: number;
 }
 
-const TimePicker: React.FC<TimePickerProps> = () => {
-  const [time, setTime] = useState<string>('');
+interface TimePickerProps {
+  onHourChange: (time: number) => void;
+  onMinuteChange: (time: number) => void;
+  Date: Date;
 
-  const generateTimeOptions = () => {
-    const options = [];
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const formattedHour = hour.toString().padStart(2, '0');
-        const formattedMinute = minute.toString().padStart(2, '0');
-        options.push(
-          <option key={`${formattedHour}:${formattedMinute}`} value={`${formattedHour}:${formattedMinute}`}>
-            {`${formattedHour}:${formattedMinute}`}
-          </option>
-        );
-      }
-    }
-    return options;
-  };
+}
+
+const generateHours = () => {
+  const hours = [];
+  for (let hour = 0; hour < 24; hour++) {
+    const formattedHour = hour.toString().padStart(2, '0');
+    hours.push(formattedHour);
+  }
+  return hours;
+};
+
+const generateMinutes = () => {
+  const minutes = [];
+  for (let minute = 0; minute < 60; minute++) {
+    const formattedMinute = minute.toString().padStart(2, '0');
+    minutes.push(formattedMinute);
+  }
+  return minutes;
+};
+
+const hours = generateHours();
+const minutes = generateMinutes();
+
+const TimePicker: React.FC<TimePickerProps> = ({Date,onHourChange,onMinuteChange}) => {
+  const [selectedHour, setSelectedHour] = useState(hours[0]);
+  const [selectedMinute, setSelectedMinute] = useState(minutes[0]);
 
   return (
-    <div className="flex bg-black items-center">
-      <input
-        className="border-2 border-gray-300 p-2 rounded-md"
-        type="text"
-        placeholder="hh:mm"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-      />
+    <div className="flex items-center space-x-4">
       <select
-        className="ml-4 border-2 border-gray-300 p-2 rounded-md"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
+        value={selectedHour}
+        onChange={(e) => {
+          setSelectedHour(e.target.value)
+          onHourChange(parseInt(e.target.value))
+        }}
+        className="w-16 py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
       >
-        <option value="" disabled>
-          Select time
-        </option>
-        {generateTimeOptions()}
+        {hours.map((hour, index) => (
+          <option key={index} value={hour}>
+            {hour}
+          </option>
+        ))}
+      </select>
+      <select
+        value={selectedMinute}
+        onChange={(e) => {setSelectedMinute(e.target.value)
+        onMinuteChange(parseInt(e.target.value))
+        }}
+        className="w-16 py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
+      >
+        {minutes.map((minute, index) => (
+          <option key={index} value={minute}>
+            {minute}
+          </option>
+        ))}
       </select>
     </div>
   );
