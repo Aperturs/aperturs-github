@@ -2,7 +2,7 @@
 
 import { useAccount } from "@/hooks/useAccount";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Signup = () => {
@@ -10,6 +10,11 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const { signUpUsingEmailAndPassword, loading, error, success, failure } = useAccount()
+    useEffect(() => {
+        if (failure) {
+            toast.error(`Could Not Sign Up due to the Error , ${error}`)
+        }
+    }, [failure])
     const router = useRouter()
 
 
@@ -127,11 +132,7 @@ const Signup = () => {
                             }).then(() => {
                                 router.push("/projects")
                             })
-                                .catch((err) => {
-                                    if (failure) {
-                                        toast.error(`Could not Login. ${error}`)
-                                    }
-                                });
+
 
 
                         }}

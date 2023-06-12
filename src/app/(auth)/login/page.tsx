@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
 import { redirect, useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loadingspinner";
 import toast from "react-hot-toast";
+import { features } from "process";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,11 @@ export default function Login() {
     "failure",
     "error"
   );
+  useEffect(() => {
+    if (failure) {
+      toast.error(`Could Not login due to the Error , ${error}`)
+    }
+  }, [failure])
   return (
     <div className="h-screen md:flex">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -113,15 +119,7 @@ export default function Login() {
                 error: <b>Could not Login.</b>,
               }).then(() => {
                 router.push("/projects")
-                redirect("/projects")
               })
-                .catch((err) => {
-                  if (failure) {
-                    toast.error(`Could not Login. ${err}`)
-                  }
-
-                });
-
             }}
           >
             {loading ? <LoadingSpinner color={"fill-blue-600"} /> : "Login"}
