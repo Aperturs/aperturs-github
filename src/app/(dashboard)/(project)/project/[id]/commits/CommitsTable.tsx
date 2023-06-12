@@ -26,8 +26,10 @@ export default function CommitsTable() {
 
   const toggleSelectAll = () => {
     if (selectedRows.length === rows.length) {
+      // If all rows are already selected, deselect all rows
       setSelectedRows([]);
     } else {
+      // If some or no rows are selected, select all rows
       setSelectedRows(rows.map((row) => row.id));
     }
   };
@@ -45,14 +47,18 @@ export default function CommitsTable() {
       <Typography variant="h5">Commits</Typography>
 
       <div className="flex items-center mb-4">
-        <Checkbox color="blue" onChange={toggleSelectAll} />
+        <Checkbox
+          color="blue"
+          checked={selectedRows.length === rows.length}
+          onChange={toggleSelectAll}
+        />
         <Typography variant="h6" className="ml-2">
           {selectedRows.length} row(s) selected
         </Typography>
       </div>
       <AnimatePresence>
         {rows.map((row, index) => (
-          <motion.tr
+          <motion.div
             key={row.id}
             initial="hidden"
             animate="visible"
@@ -78,7 +84,7 @@ export default function CommitsTable() {
                 </div>
               </div>
             </Card>
-          </motion.tr>
+          </motion.div>
         ))}
       </AnimatePresence>
     </Card>
