@@ -24,7 +24,6 @@ export default function RootLayout({
       reverseOrder={false}
       />
         {children}
-        
       </body>
     </html>
   )
