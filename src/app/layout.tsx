@@ -1,3 +1,4 @@
+import '../styles/calendar.css'
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { Toaster } from "react-hot-toast";
@@ -24,7 +25,6 @@ export default function RootLayout({
       reverseOrder={false}
       />
         {children}
-        
       </body>
     </html>
   )

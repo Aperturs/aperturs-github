@@ -15,6 +15,7 @@ import { useAccount } from "@/hooks/useAccount";
 import { redirect,useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import router from "next/router";
+import Link from "next/link";
 
 // profile menu component
 
@@ -28,27 +29,22 @@ function ProfileMenu() {
     {
       label: "My Profile",
       icon: IoMdContact,
-      onClick: () => {
-        router.push("/profile");
-      }
+      link: "/profile"
     },
     {
       label: "Settings",
       icon: BsFillGearFill,
-      onClick: () => {
-        router.push("/settings");
-      }
+      link: "/settings"
     },
     {
       label: "Notifications",
       icon: IoNotificationsCircleSharp,
+      link: "/notifications"
     },
     {
       label: "Help",
       icon: IoHelpBuoy,
-      onClick: () => {
-        router.push("/help");
-      }
+      link: "/help"
     },
     {
       label: "Sign Out",
@@ -86,7 +82,7 @@ function ProfileMenu() {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon, onClick }, key) => {
+        {profileMenuItems.map(({ label, icon, onClick,link }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
           return (
             <MenuItem
@@ -102,6 +98,7 @@ function ProfileMenu() {
               {React.createElement(icon, {
                 className: `h-5 w-5 mr-1 ${isLastItem ? "text-red-500" : ""}`,
               })}
+              <Link href={link || '/'}>
               <Typography
                 as="span"
                 variant="small"
@@ -110,6 +107,7 @@ function ProfileMenu() {
               >
                 {label}
               </Typography>
+              </Link>
             </MenuItem>
           );
         })}
@@ -131,35 +129,27 @@ function NavList() {
     {
       label: "Projects",
       icon: BsFileCodeFill,
-      onClick: () => {
-        router.push("/projects");
-      }
+      href: "/projects",
     },
     {
       label: "All Posts",
       icon: IoFileTrayStacked,
-      onClick: () => {
-        router.push("/posts");
-      }
+      href: "/posts",
     },
     {
       label: "Queue",
       icon: HiQueueList,
-      onClick: () => {
-        router.push("/queue");
-      }
+      href: "/queue",
     },
   ];
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-      {navListItems.map(({ label, icon,onClick }, key) => (
+      {navListItems.map(({ label, icon,href }, key) => (
+        <Link href={href} 
+        >
         <Typography
           key={label}
-          onClick={() => {
-            onClick();
-          }}
-          as="a"
-          href="#"
+          as="p"
           variant="small"
           color="blue-gray"
           className="font-normal"
@@ -168,6 +158,7 @@ function NavList() {
             {React.createElement(icon, { className: "h-[18px] w-[18px]" })} {label}
           </MenuItem>
         </Typography>
+        </Link>
       ))}
     </ul>
   );
@@ -188,6 +179,7 @@ export default function ComplexNavbar() {
   return (
     <Navbar className="mx-auto max-w-screen-xl p-2 lg:rounded-xl lg:pl-6">
       <div className="relative mx-auto flex items-center text-blue-gray-900">
+        <Link href="/projects">
         <Image
           src={'/logo.svg'}
           width={40}
@@ -195,6 +187,7 @@ export default function ComplexNavbar() {
           alt='Aperturs Logo'
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
         />
+        </Link>
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />
         </div>
