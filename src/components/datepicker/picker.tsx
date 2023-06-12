@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Fragment, useState } from "react";
 import {
@@ -11,43 +11,91 @@ import {
 import CalendarComponent from "./calender";
 import { format } from "date-fns";
 import TimePicker from "./timepicker";
-
+import { toast } from "react-hot-toast";
 
 function formatDate(date: Date): string {
-    return format(date, 'dd MMMM yyyy');
+  return format(date, "dd MMMM yyyy");
+}
+function formatTime(hours?: number, minutes?: number): string {
+  if (hours === undefined || minutes === undefined) {
+    return "00:00";
   }
 
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
 
-  
- 
+  return `${formattedHours}:${formattedMinutes}`;
+}
+
+
 export default function Picker() {
   const [open, setOpen] = useState(false);
-  const [date,setDate] = useState<Date>();
-  const [minutes, setminutes] = useState<number>();
-  const [hours, sethours] = useState<number>();
- 
+  const [date, setDate] = useState<Date>(new Date());
+  const [minutes, setminutes] = useState<number>(0);
+  const [hours, sethours] = useState<number>(0);
+  const formattedTime = formatTime(hours, minutes);
+
+
+  function handleIsPastTime(
+    date: Date | undefined,
+    hours: number | undefined,
+    minutes: number | undefined
+  ): boolean {
+    if (!date || !hours || !minutes) {
+      return true; // Return true if any of the inputs are undefined
+    }
+
+    const now = new Date();
+    const scheduledTime = new Date(date);
+    scheduledTime.setHours(hours, minutes, 0);
+
+    // Calculate the time 10 minutes from now
+    const tenMinutesFromNow = new Date(now.getTime() + 10 * 60000);
+
+    if (scheduledTime < tenMinutesFromNow) {
+      // If the scheduled time is less than present time + 10 minutes
+      // Update hours, minutes, and date to 10 minutes from now
+      const newScheduledTime = new Date(tenMinutesFromNow);
+      const newHours = newScheduledTime.getHours();
+      const newMinutes = newScheduledTime.getMinutes();
+
+      setDate(newScheduledTime);
+      sethours(newHours);
+      setminutes(newMinutes);
+
+      return false;
+    }
+
+    return true;
+  }
+
   const handleOpen = () => {
-    setOpen(!open)
-    
-};
+    if(open) {
+    if (!handleIsPastTime(date, hours, minutes)) {
+      toast.error("Please select a time at least 10 minutes from now");
+    }
+    }
+    setOpen(!open);
+  };
 
   const handleConfirm = () => {
-    console.log(`scheduled for ${formatDate(date || new Date())} at ${hours}:${minutes}`)
-    handleOpen()
-  }
-  
- 
+    console.log(
+      `scheduled for ${formatDate(date || new Date())} at ${formatTime}`
+    );
+    handleOpen();
+  };
+
   return (
     <Fragment>
-      <span onClick={handleOpen} >
-        {date ? formatDate(date) : "Pick Date"}
-      </span>
+      <span className="btn btn-primary mx-2 py-2 px-8 bg-primary text-white" onClick={handleOpen}>{date ? formatDate(date) : "Pick Date"}</span>
       <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Scheduled for {date ? formatDate(date):""} at </DialogHeader>
+        <DialogHeader className="text-sm">
+          Scheduled for {date ? formatDate(date) : ""} at {formattedTime}
+        </DialogHeader>
         <DialogBody divider>
           <CalendarComponent handleDate={setDate} />
-          <TimePicker 
-          Date={date || new Date()}
+          <TimePicker
+            Date={date || new Date()}
             onMinuteChange={setminutes}
             onHourChange={sethours}
           />

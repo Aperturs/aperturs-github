@@ -2,6 +2,7 @@ import { Avatar } from '@material-tailwind/react'
 import React, { useState } from 'react'
 import LinkedInPostCreation from './textarea'
 import DateTimePicker from './datepicker';
+import Picker from '../datepicker/picker';
 
 function LinkedinPostCard() {
   const [content, setContent] = useState('');
@@ -33,7 +34,7 @@ function LinkedinPostCard() {
         onContentChange={setContent}
         />
         <div>
-        <DateTimePicker onButtonClick={handleDate} />
+        <Picker />
         <button className='btn btn-primary px-8 text-white'
         onClick={() => handlePostSubmit(content)}
         >

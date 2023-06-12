@@ -47,7 +47,7 @@ const TimePicker: React.FC<TimePickerProps> = ({Date,onHourChange,onMinuteChange
           setSelectedHour(e.target.value)
           onHourChange(parseInt(e.target.value))
         }}
-        className="w-16 py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
+        className="w-auto py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
       >
         {hours.map((hour, index) => (
           <option key={index} value={hour}>
@@ -60,7 +60,7 @@ const TimePicker: React.FC<TimePickerProps> = ({Date,onHourChange,onMinuteChange
         onChange={(e) => {setSelectedMinute(e.target.value)
         onMinuteChange(parseInt(e.target.value))
         }}
-        className="w-16 py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
+        className="w-auto py-2 pl-3 pr-6 text-sm rounded-lg bg-white text-gray-900 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
       >
         {minutes.map((minute, index) => (
           <option key={index} value={minute}>
