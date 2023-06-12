@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "@/hooks/useAccount";
 import { redirect, useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loadingspinner";
 import toast from "react-hot-toast";
+import { features } from "process";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,11 @@ export default function Login() {
     "failure",
     "error"
   );
+  useEffect(() => {
+    if (failure) {
+      toast.error(`Could Not login due to the Error , ${error}`)
+    }
+  }, [failure])
   return (
     <div className="h-screen md:flex">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -102,24 +108,18 @@ export default function Login() {
             />
           </div>
           <button
-            className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${
-              loading ? "loading" : ""
-            }`}
+            className={` flex w-full bg-indigo-600 mt-4 py-2 text-lg rounded-2xl text-white font-semibold mb-2 justify-center ${loading ? "loading" : ""
+              }`}
             onClick={async (event) => {
               event.preventDefault();
               console.log("fjklsjflk;sdjf;sf");
-              await loginWithEmailAndPassword(email, password).then((res) => {
-                console.log(res);
-                if (success) {
-                  toast.promise(loginWithEmailAndPassword(email, password), {
-                    loading: "Loggin In...",
-                    success: <b>Logged In!</b>,
-                    error: <b>Could not Login.</b>,
-                  });
-                  router.push("/projects"), redirect("/projects");
-                }
-                if (failure) toast.error(`Could not Login. ${error}`);
-              });
+              toast.promise(loginWithEmailAndPassword(email, password), {
+                loading: "Loggin In...",
+                success: <b>Logged In!</b>,
+                error: <b>Could not Login.</b>,
+              }).then(() => {
+                router.push("/projects")
+              })
             }}
           >
             {loading ? <LoadingSpinner color={"fill-blue-600"} /> : "Login"}
