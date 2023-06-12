@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useUserStore } from "@/stores/user";
+import { useAccountStore } from "@/stores/account";
 import { apertursAccount } from "@/appwrite/account";
 import { useAPICallWrapper } from "./useAPICallWrapper";
+import { useUserStore } from "@/stores/user";
+import { useUser } from "./useUser";
+import { apertursUser } from "@/appwrite/user";
 
 /**
  * Represents the useAccount hook.
@@ -16,10 +19,11 @@ export const useAccount = () => {
         wrapAPICall,
     } = useAPICallWrapper();
 
+
     const [loading, setLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const searchParams = useSearchParams();
-    const user = useUserStore((state) => state.user);
+    const account = useAccountStore((state) => state.account);
 
     /**
      * Logs in a user with the provided email and password.
@@ -34,9 +38,15 @@ export const useAccount = () => {
         try {
             await wrapAPICall(async () =>
                 apertursAccount.loginWithEmailAndPassword(email, password)
-            ).then((newUser) => {
+            ).then(async (newUser) => {
                 if (newUser) {
-                    useUserStore.setState({ user: newUser });
+
+                    const user = await wrapAPICall(async () => apertursUser.getUser())
+                    if (user) {
+                        useAccountStore.setState({ account: newUser });
+                        useUserStore.setState({ user });
+                    }
+
                 }
             });
         } catch (e) {
@@ -54,6 +64,7 @@ export const useAccount = () => {
         setLoading(true);
         try {
             await wrapAPICall(async () => apertursAccount.logout()).then(() => {
+                useAccountStore.setState({ account: null });
                 useUserStore.setState({ user: null });
             });
         }
@@ -81,7 +92,7 @@ export const useAccount = () => {
             await wrapAPICall(async () =>
                 apertursAccount.signUpUserUsingEmailAndPassword(email, password, name)
             ).then((newUser) => {
-                useUserStore.setState({ user: newUser });
+                useAccountStore.setState({ account: newUser });
             });
         }
         catch (err) {
@@ -115,19 +126,19 @@ export const useAccount = () => {
     };
 
     useEffect(() => {
-        if (user) {
+        if (account) {
             setIsAuthenticated(true);
         } else {
             setIsAuthenticated(false);
         }
-    }, [user]);
+    }, [account]);
 
     return {
         loginWithEmailAndPassword,
         logout,
         signUpUsingEmailAndPassword,
         confirmVerification,
-        user,
+        account,
         isAuthenticated,
         error: APICallError,
         loading: loading,
