@@ -135,7 +135,7 @@ const ConnnectionButton = () => {
       <div className="flex gap-4 items-center">
         <NewRepoFormModal />
 
-        <div className="badge badge-primary badge-outline">Github is connected...</div>
+        <div className="badge badge-primary badge-outline">Git connected..</div>
 
       </div>
       : <button className="px-8  btn-primary btn text-white" onClick={onGithubConnect}>
@@ -155,22 +155,33 @@ const page = () => {
   }, [])
   return (
     <div className="w-full py-12 ">
-      <div className="w-full flex mb-6 justify-between">
-        <Typography variant="h3" className="">
+      <div className="w-full md:flex mb-6 justify-between">
+        <h3 className="lg:text-2xl sm:text-xl text-lg font-bold ">
           Your Connected Repositories
-        </Typography>
+        </h3>
         <ConnnectionButton />
-
-
-
       </div>
-      <div className="flex flex-row gap-4">
+      <div className="grid xl:grid-cols-4 sm:grid-cols-2 grid-col-1 gap-6">
         <GithubCard
           repoName="repoName"
           repoDescription="repoDescription"
           lastUpdated="lastUpdated"
-          repoImage="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
         />
+                <GithubCard
+          repoName="repoName"
+          repoDescription="repoDescription"
+          lastUpdated="lastUpdated"
+        />
+                <GithubCard
+          repoName="repoName"
+          repoDescription="repoDescription"
+          lastUpdated="lastUpdated"
+        />
+                <GithubCard
+          repoName="repoName"
+          repoDescription="repoDescription"
+          lastUpdated="lastUpdated"
+        />      
       </div>
     </div>
   );
