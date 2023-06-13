@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import GithubCard from "./githubcard";
-import { Avatar, Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Spinner, Typography } from "@material-tailwind/react";
+import { Avatar, Button, Card, CardBody, CardFooter, CardHeader, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, Input, Spinner, Typography } from "@material-tailwind/react";
 import { useUser } from "@/hooks/useUser";
 import Select, { OptionProps } from 'react-select';
 
@@ -13,6 +13,7 @@ import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { BsInfoCircle } from "react-icons/bs";
 import { useProject } from "@/hooks/useProject";
 import toast from "react-hot-toast";
+import { GiEmptyHourglass } from "react-icons/gi";
 type RepoOptionType = {
   value: Repo,
   label: string
@@ -41,10 +42,11 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const { user } = useUser()
+
   const { getRepositories, loading } = useGithub(user?.githubTokens.at(0)?.access_token ?? "")
   const [option, setOption] = useState({} as RepoOptionType);
   const [options, setOptions] = useState([] as RepoOptionType[]);
-
+  const router = useRouter()
   useEffect(() => {
     getRepositories().then((res) => {
       const repos = res?.data as Repo[]
@@ -74,9 +76,14 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
       repo_name: option.value.full_name,
       repo_url: option.value.html_url,
     })
+    console.log({ newProject })
     if (newProject) {
-      redirect(`/project/${newProject.$id}/context`)
+      const res = JSON.parse(newProject)
+      console.log({ res }, "res")
+      router.push(`/project/${res["projectDoc"]["$id"]}/context`)
+
     }
+
 
   }
   return (
@@ -162,7 +169,7 @@ const ConnnectionButton = () => {
   console.log({ user }, "user")
   const doesUserHaveGithub = user?.githubTokens ? user.githubTokens.length > 0 : false
   const hasLinkedln = user?.linkedlnTokens.length ? user?.linkedlnTokens.length > 0 : false
-  if (!user) return null
+  if (!user) return <Spinner className="h-12 w-12" />
   return (<>
     {doesUserHaveGithub ?
       hasLinkedln ? <div className="flex gap-4 items-center">
@@ -186,14 +193,54 @@ const ConnnectionButton = () => {
 
   </>)
 }
+type ProjectCard = {
+  repo_name: string,
+  repo_description: string,
+  lastUpdated: string,
+  projectId: string
+}
 const page = () => {
   const searchParams = useSearchParams()
-  const { refreshUser } = useUser()
+  const { refreshUser, user } = useUser()
   useEffect(() => {
 
     refreshUser()
 
   }, [])
+  const {
+    projects
+  } = useProject()
+  const { getRepository } = useGithub(user?.githubTokens.at(0)?.access_token ?? "")
+  console.log({ projects }, "projects")
+
+  const [projectsCardData, setProjectsCardData] = useState([] as ProjectCard[])
+
+  useEffect(() => {
+    const getProjectsCard = async () => {
+      if (projects) {
+        const newProjectsPromises = projects.map(async (value) => {
+          const [owner, repo] = value.repo_name.split("/")
+          const repoRes = await getRepository(
+            owner, repo
+          )
+          const repoData = repoRes?.data
+          return {
+            repo_name: value.repo_name,
+            repo_description: value.repo_description ? value.repo_description : "No Description",
+            projectId: value.$id,
+            lastUpdated: Intl.DateTimeFormat("en", {
+              dateStyle: "medium"
+            }).format(new Date(repoData?.updated_at ?? ""))
+          }
+        })
+        const newProjectsCardData = await Promise.all(newProjectsPromises)
+        setProjectsCardData(newProjectsCardData)
+
+      }
+    }
+    getProjectsCard()
+  }, [projects])
+  if (!user) return <Spinner className="h-12 w-12" />
   return (
     <div className="w-full py-12 ">
       <div className="w-full md:flex mb-6 justify-between">
@@ -202,27 +249,34 @@ const page = () => {
         </h3>
         <ConnnectionButton />
       </div>
-      <div className="grid xl:grid-cols-4 sm:grid-cols-2 grid-col-1 gap-6">
-        <GithubCard
-          repoName="repoName"
-          repoDescription="repoDescription"
-          lastUpdated="lastUpdated"
-        />
-        <GithubCard
-          repoName="repoName"
-          repoDescription="repoDescription"
-          lastUpdated="lastUpdated"
-        />
-        <GithubCard
-          repoName="repoName"
-          repoDescription="repoDescription"
-          lastUpdated="lastUpdated"
-        />
-        <GithubCard
-          repoName="repoName"
-          repoDescription="repoDescription"
-          lastUpdated="lastUpdated"
-        />
+      <div className={`grid ${(projects || projectsCardData.length > 0) ? "" : "place-items-center"}  xl:grid-cols-4 sm:grid-cols-2 grid-col-1 gap-6`}>
+
+        {
+          (projects && projectsCardData.length > 0) ? <>
+            {
+              projectsCardData.map((cardData) => <GithubCard projectId={cardData.projectId} repoName={cardData.repo_name} repoDescription={cardData.repo_description} lastUpdated={cardData.lastUpdated} />)
+            }
+
+          </> : <>
+            <Card className="mt-6 w-96">
+              <CardHeader color="blue-gray" className="relative h-56">
+                <GiEmptyHourglass className="w-full h-full" />
+              </CardHeader>
+              <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2 text-center">
+                  Iain Thomas Once said ...
+                </Typography>
+                <Typography className="text-center">
+                  “All the space without you in it, is empty.”
+                </Typography>
+              </CardBody>
+              <CardFooter className="pt-0 text-xs">
+                <Button disabled>Projects is Empty ,Connect/Commit/ Post </Button>
+              </CardFooter>
+            </Card>
+
+          </>
+        }
       </div>
     </div>
   );

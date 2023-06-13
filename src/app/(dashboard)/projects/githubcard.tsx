@@ -8,12 +8,15 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
+
 
 type Props = {
   repoName: string;
   repoDescription: string;
   lastUpdated: string;
   repoImage?: string;
+  projectId: string;
 };
 
 export default function GithubCard({
@@ -21,7 +24,9 @@ export default function GithubCard({
   repoDescription,
   lastUpdated,
   repoImage,
+  projectId
 }: Props) {
+  const router = useRouter()
   return (
     <Card className="w-auto">
       {repoImage && (
@@ -34,8 +39,8 @@ export default function GithubCard({
           <Typography color="blue-gray" className="font-medium">
             {repoName}
           </Typography>
-          <Typography color="blue-gray" className="font-medium">
-            {lastUpdated}
+          <Typography color="blue-gray" className="text-xs">
+            Updated At {lastUpdated}
           </Typography>
         </div>
         <Typography
@@ -50,7 +55,7 @@ export default function GithubCard({
         <Button
           ripple={false}
           fullWidth={true}
-          onClick={() => {}}
+          onClick={() => { router.push(`/project/${projectId}`) }}
           className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:shadow-none hover:scale-105 focus:shadow-none focus:scale-105 active:scale-100"
         >
           Overview

@@ -18,6 +18,7 @@ const apertursProject = {
         ...project,
       })
     );
+    console.log({ execution });
     return execution;
   },
   async updateContext(
