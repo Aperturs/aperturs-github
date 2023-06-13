@@ -13,7 +13,7 @@ export default function RootLayout({
         <ComplexNavbar />
       </div>
       <div className="w-full flex justify-center">
-        <div className="sm:w-[80%] w-[95%]">{children}
+        <div className="sm:max-w-screen-2xl w-[95%]">{children}
         {modal}
         </div>
       </div>
