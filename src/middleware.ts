@@ -10,13 +10,15 @@ export async function middleware(request: NextRequest) {
   }
   const url = request.nextUrl.clone();
 
-  const isLoggedIn = (
+  const isLoggedIn =
     request.cookies.get(COOKIES.SESSION_ID) &&
-    request.cookies.get(COOKIES.USER_ID)
-  );
+    request.cookies.get(COOKIES.USER_ID);
 
   if (!isLoggedIn) {
-    if (request.nextUrl.pathname.startsWith("/dashboard")) {
+    if (
+      request.nextUrl.pathname.startsWith("/projects") ||
+      request.nextUrl.pathname.includes("/project")
+    ) {
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
@@ -33,7 +35,7 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname.startsWith("/login") ||
       request.nextUrl.pathname.startsWith("/signup")
     ) {
-      url.pathname = "/dashboard";
+      url.pathname = "/projects";
       return NextResponse.redirect(url);
     }
   }
@@ -50,6 +52,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

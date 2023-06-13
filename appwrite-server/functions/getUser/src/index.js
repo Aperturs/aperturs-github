@@ -48,10 +48,13 @@ module.exports = async function (req, res) {
   const githubTokensJsons = await Promise.all(githubTokensPromises);
   console.log({ githubTokensJsons }, "this is github tokens jsons");
   finalJson.githubTokens = githubTokensJsons;
+  console.log({ linkedlnTokens }, "these are the linkedln tokens");
+
   const linkedlnTokensPromises = linkedlnTokens.map(async (tokenId) => {
     return await database.getDocument("aperturs", "linkedlnTokens", tokenId);
   });
   const linkedlnTokensJsons = await Promise.all(linkedlnTokensPromises);
+  console.log({ linkedlnTokensJsons }, "this is linkedln tokens jsons");
   finalJson.linkedlnTokens = linkedlnTokensJsons;
 
   return res.json(finalJson);

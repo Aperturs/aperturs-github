@@ -46,7 +46,7 @@ const AddSocial = () => {
 const Socials = () => {
   const router = useRouter();
   const onGithubConnect = () => {
-    const redirectUrl = process.env.NODE_ENV == "development" ? "http://localhost:3000/api/callback/github" : "https://app.aperturs.com/api/callback/github"
+    const redirectUrl = process.env.NODE_ENV == "development" ? "http://localhost:3000/api/callback/github" : "https://ai.aperturs.com/api/callback/github"
     console.log("Github Connect")
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent("user repo")}`
   }
@@ -66,13 +66,13 @@ const Socials = () => {
         <p>Twitter</p>
       </button>
       <button className="btn hover:bg-primary hover:text-white hover:border-0  gap-2"
-      onClick={onLinkedLnConnect}
+        onClick={onLinkedLnConnect}
       >
         <FaLinkedinIn className="text-2xl " />
         <p>Linkedin</p>
       </button>
       <button className="btn hover:bg-primary hover:text-white hover:border-0  gap-2"
-      onClick={onGithubConnect}
+        onClick={onGithubConnect}
       >
         <FaGithub className="text-2xl " />
         <p>Github</p>

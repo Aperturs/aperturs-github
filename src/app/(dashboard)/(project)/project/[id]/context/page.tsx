@@ -1,5 +1,8 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect } from 'react'
 import QuestionCard from './question';
+import toast from 'react-hot-toast';
 
 
 
@@ -48,14 +51,23 @@ const questions = [
 ];
 
 const ProjectContext = () => {
+  useEffect(() => {
+    toast(
+      "The questions below are optional. You can answer them if you want to share more about your project. It will help our AI to generate a better post for you.",
+      {
+        duration: 6000,
+
+      }
+    );
+  }, [])
   return (
     <div className="container mx-auto py-8">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {questions.map((q) => (
-        <QuestionCard key={q.question} question={q.question} description={q.description} />
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {questions.map((q) => (
+          <QuestionCard key={q.question} question={q.question} description={q.description} />
+        ))}
+      </div>
     </div>
-  </div>
   )
 }
 
