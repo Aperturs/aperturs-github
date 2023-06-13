@@ -15,8 +15,9 @@ export const useAPICallWrapper = () => {
         setAPICallError("")
         setIsAPICallSuccess(false)
         setIsAPICallLoading(true)
+        let value;
         try {
-            const value = await apiCall();
+            value = await apiCall();
             setIsAPICallSuccess(true)
             return value
         }
@@ -32,7 +33,9 @@ export const useAPICallWrapper = () => {
         }
         finally {
             setIsAPICallLoading(false)
+            return value
         }
+
     }
     return {
         isAPICallLoading,

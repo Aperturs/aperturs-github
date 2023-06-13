@@ -13,27 +13,35 @@ export function useProject(projectId?: string) {
     const projects = useUserStore((state) => state.user?.projects)
     const refreshProjects = () => refreshUser()
 
+    const project = useUserStore((state) => state.user?.projects?.find((project) => project.$id === projectId))
+
     const createProject = async (project: CreateProjectProp) => {
-        let models: Models.Execution | undefined
+        let models: string | undefined;
         try {
 
-            wrapAPICall(async () => {
+            await wrapAPICall(async () => {
                 const models = await apertursProject.createProject({
                     ...project
                 })
                 await refreshProjects()
-                return models
+                console.log({ models })
+                return models.response
 
             }).then((value) => {
+
                 models = value
+                console.log({ models }, "new models")
             })
 
 
         } catch (error) {
             throw error
         }
-        return models
+        finally {
+            return models
+        }
     }
+
 
     const updateContext = async (questions_anwsers_json_string: string) => {
         try {
@@ -41,6 +49,7 @@ export function useProject(projectId?: string) {
                 wrapAPICall(async () => {
 
                     await apertursProject.updateContext(questions_anwsers_json_string, projectId)
+                    await refreshProjects()
                 });
             }
         }
@@ -48,6 +57,7 @@ export function useProject(projectId?: string) {
             throw error
         }
     }
+
 
 
     return {
@@ -58,8 +68,8 @@ export function useProject(projectId?: string) {
         failure: isAPICallFailure,
         error: APICallError,
         success: isAPICallSuccess,
-        updateContext
-
+        updateContext,
+        project
     }
 
 }
