@@ -75,6 +75,11 @@ const NewRepoFormModal = () => {
                     onChange={value => setOption(value as any)}
 
                   />
+                  <button className="px-8 btn-primary btn text-white" onClick={handleOpen}>
+                    Connect Linkedln ...
+                  </button>
+
+
                 </div>
               }
               {count == 1 &&
@@ -97,9 +102,16 @@ const NewRepoFormModal = () => {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
-            <span>Confirm</span>
-          </Button>
+          <>
+            {
+              count !== 2 ? <Button variant="gradient" color="green" onClick={() => setCount(count + 1)}>
+                <span>Next</span>
+              </Button> : <Button variant="gradient" color="green" onClick={handleOpen}>
+                <span>Confirm</span>
+              </Button>
+            }
+          </>
+
         </DialogFooter>
       </Dialog>
     </>
