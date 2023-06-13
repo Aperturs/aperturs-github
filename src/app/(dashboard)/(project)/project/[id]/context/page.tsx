@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react'
 import QuestionCard from './question';
 import toast from 'react-hot-toast';
