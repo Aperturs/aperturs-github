@@ -13,14 +13,9 @@ const Posts = () => {
         </button>
       </div>
     <div className='grid xl:grid-cols-3 sm:grid-cols-2 grid-col-1 gap-6'>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-
+        <PostCard  id={1}/>
+        <PostCard  id={2}/>
+        <PostCard  id={3}/>
     </div>
     </div>
 
