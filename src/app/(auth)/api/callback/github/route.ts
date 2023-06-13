@@ -42,5 +42,8 @@ export async function GET(req: NextRequest) {
     })
   );
 
-  return NextResponse.redirect("/projects?refreshUser=true");
+  const url = req.nextUrl.clone();
+  url.pathname = "/projects";
+
+  return NextResponse.redirect(url);
 }

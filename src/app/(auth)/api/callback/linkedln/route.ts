@@ -51,6 +51,8 @@ export async function GET(req: NextRequest) {
       })
     )
     .catch(console.log);
+  const url = req.nextUrl.clone();
+  url.pathname = "/projects";
 
-  return NextResponse.json({ user });
+  return NextResponse.redirect(url);
 }

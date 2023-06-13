@@ -21,13 +21,16 @@ declare type Project = {
   repo_image_url: string;
   repo_id: string;
   user_id: string;
+  questions_answers_json_string: string;
+  commit_count: number;
 };
+declare interface ProjectDoc extends Models.Document, Project {}
 declare interface LinkedLnTokenDoc extends Models.Document, LinkedLnToken {}
 declare interface GithubTokenDoc extends GithubToken, Models.Document {}
 declare interface UserDoc extends Models.Document {
   projects: ProjectDoc[];
   githubTokens: GithubTokenDoc[];
-  linkedLnTokens: LinkedLnTokenDoc[];
+  linkedlnTokens: LinkedLnTokenDoc[];
 }
 
 type UserAccount = Models.User<Models.Preferences>;
