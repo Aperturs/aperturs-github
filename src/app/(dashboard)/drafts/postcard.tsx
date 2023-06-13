@@ -9,7 +9,8 @@ import {
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 
-export default function PostCard() {
+
+export default function PostCard({ id  }: { id: number}) {
 
     const router = useRouter();
   return (
