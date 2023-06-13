@@ -132,15 +132,15 @@ function NavList() {
       href: "/projects",
     },
     {
-      label: "All Posts",
+      label: "All Drafts",
       icon: IoFileTrayStacked,
-      href: "/posts",
+      href: "/drafts",
     },
-    {
-      label: "Queue",
-      icon: HiQueueList,
-      href: "/queue",
-    },
+    // {
+    //   label: "Queue",
+    //   icon: HiQueueList,
+    //   href: "/queue",
+    // },
   ];
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">

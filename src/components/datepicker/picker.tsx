@@ -36,14 +36,10 @@ export default function Picker() {
   const formattedTime = formatTime(hours, minutes);
 
 
-  function handleIsPastTime(
-    date: Date | undefined,
-    hours: number | undefined,
-    minutes: number | undefined
-  ): boolean {
-    if (!date || !hours || !minutes) {
-      return true; // Return true if any of the inputs are undefined
-    }
+  function handleIsPastTime(date: Date ,hours: number,minutes: number): boolean {
+    // if (!date || !hours || !minutes) {
+    //   return true; // Return true if any of the inputs are undefined
+    // }
 
     const now = new Date();
     const scheduledTime = new Date(date);
@@ -87,9 +83,9 @@ export default function Picker() {
 
   return (
     <Fragment>
-      <span className="btn btn-primary mx-2 py-2 px-8 bg-primary text-white" onClick={handleOpen}>{date ? formatDate(date) : "Pick Date"}</span>
-      <Dialog open={open} handler={handleOpen}>
-        <DialogHeader className="text-sm">
+      <span className="btn  btn-primary mx-2 py-2 px-8 bg-primary text-white" onClick={handleOpen}>{date ? formatDate(date) : "Pick Date"}</span>
+      <Dialog open={open} handler={handleOpen} size={`xl`}>
+        <DialogHeader className="sm:text-sm text-xs">
           Scheduled for {date ? formatDate(date) : ""} at {formattedTime}
         </DialogHeader>
         <DialogBody divider>
