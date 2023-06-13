@@ -148,7 +148,7 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
 }
 const ConnnectionButton = () => {
   const onGithubConnect = () => {
-    const redirectUrl = process.env.NODE_ENV == "development" ? "http://localhost:3000/api/callback/github" : "https://app.aperturs.com/api/callback/github"
+    const redirectUrl = process.env.NODE_ENV == "development" ? "http://localhost:3000/api/callback/github" : "https://ai.aperturs.com/api/callback/github"
     console.log("Github Connect")
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUrl)}&scope=${encodeURIComponent("user repo")}`
   }
