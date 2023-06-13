@@ -1,8 +1,8 @@
 import { Avatar } from '@material-tailwind/react'
 import React, { useState } from 'react'
 import LinkedInPostCreation from './textarea'
-import DateTimePicker from './datepicker';
 import Picker from '../datepicker/picker';
+
 
 function LinkedinPostCard() {
   const [content, setContent] = useState('');
@@ -23,6 +23,7 @@ function LinkedinPostCard() {
             size="lg"
             color="blue"
             className="mb-4"
+
           />
             <div>
               <div className="text-lg font-bold">John Doe</div>
