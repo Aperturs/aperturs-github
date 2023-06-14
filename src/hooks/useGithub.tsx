@@ -33,6 +33,15 @@ export const useGithub = (token: string) => {
             }
         ))
     }
+    const getCommits = async (owner: string, repo: string) => {
+        return wrapAPICall(async () => await octokit.rest.repos.listCommits(
+            {
+                owner,
+                repo
+            }
+        ))
+    }
+
 
     return {
         getRepositories,
@@ -40,7 +49,8 @@ export const useGithub = (token: string) => {
         loading: isAPICallLoading,
         failure: isAPICallFailure,
         error: APICallError,
-        success: isAPICallSuccess
+        success: isAPICallSuccess,
+        getCommits
 
     }
 
