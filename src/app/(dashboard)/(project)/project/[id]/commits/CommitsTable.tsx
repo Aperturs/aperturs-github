@@ -3,25 +3,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, Typography, Checkbox } from "@material-tailwind/react";
+import { TableRow } from "./page";
 
-interface TableRow {
-  id: number;
-  title: string;
-  description: string;
-}
 
-const rows: TableRow[] = [
-  { id: 1, title: "Title 1", description: "Description 1" },
-  { id: 2, title: "Title 2", description: "Description 2" },
-  { id: 3, title: "Title 3", description: "Description 3" },
-];
 
 const staggerVariants = {
   hidden: { opacity: 0 },
   visible: (i: number) => ({ opacity: 1, transition: { delay: i * 0.1 } }),
 };
 
-export default function CommitsTable() {
+export default function CommitsTable({ rows }: { rows: TableRow[] }) {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
   const toggleSelectAll = () => {
@@ -78,9 +69,9 @@ export default function CommitsTable() {
                 />
                 <div>
                   <Typography variant="h6" className="text-blue-gray-800 ">
-                    {row.title}
+                    {row.message}
                   </Typography>
-                  <Typography variant="body2">{row.description}</Typography>
+                  <Typography variant="body2">Created on {row.date} by {row.author}</Typography>
                 </div>
               </div>
             </Card>

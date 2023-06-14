@@ -1,15 +1,50 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import CommitsTable from './CommitsTable'
+import { useGithub } from '@/hooks/useGithub'
+import { useUser } from '@/hooks/useUser'
+import { useParams } from 'next/navigation'
+import { useProject } from '@/hooks/useProject'
+import { Spinner } from '@material-tailwind/react'
+import { CommitRoot } from '@/types/github'
+
+export interface TableRow {
+  id: number;
+  message: string;
+  author: string;
+  date: string;
+}
 
 const CommitsPage = () => {
+  const { id } = useParams()
+  const { project } = useProject(id)
+  const { user } = useUser()
+  const { getCommits, loading } = useGithub(user?.githubTokens.at(0)?.access_token ?? "")
+
+  if (!project) return <Spinner className="h-12 w-12" />
+  const [commits, setCommits] = useState([] as CommitRoot[])
+  const [tableRows, setTableRows] = useState([] as TableRow[])
   useEffect(() => {
-    console.log('test')
-    
+    const [owner, repo] = project.repo_name.split("/");
+    getCommits(owner, repo).then((res) => {
+      if (res) {
+        const newTablesRows = res.data.map((commit, index) => {
+          return {
+            id: index,
+            author: commit.committer?.name ?? "",
+            message: commit.commit.message,
+            date: Intl.DateTimeFormat("en", {
+              dateStyle: "short",
+            }).format(new Date(commit.commit.committer?.date ?? ""))
+          } as TableRow
+        })
+        setTableRows(newTablesRows)
+      }
+    })
   }, [])
   return (
     <div>
-      <CommitsTable />
+      {loading ? <Spinner className='w-12 h-12' /> : <CommitsTable rows={tableRows} />}
     </div>
   )
 }
