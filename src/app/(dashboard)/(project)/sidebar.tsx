@@ -25,6 +25,7 @@ import { IoMdSettings } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const menuItems = [
   // {
@@ -41,7 +42,7 @@ const menuItems = [
     url: "/commits"
   },
   {
-    text: "Posts",
+    text: "Drafts",
     icon: <GiPaperTray className="h-5 w-5" />,
     suffix: (
       <Chip
@@ -52,7 +53,7 @@ const menuItems = [
         className="rounded-full"
       />
     ),
-    url: "/posts"
+    url: "/drafts"
   },
   {
     text: "Context",
@@ -75,15 +76,19 @@ function NavList() {
 
     <List>
       {menuItems.map((menuItem, index) => (
-        <ListItem key={index} onClick={() => {
-          router.push(`project/${param["id"]}/${menuItem.url}`)
-        }}>
+        <Link href={`project/${param["id"]}/${menuItem.url}`} key={index}>
+        <ListItem key={index} 
+        // onClick={() => {
+        //   router.push(`project/${param["id"]}/${menuItem.url}`)
+        // }}
+        >
           <ListItemPrefix>{menuItem.icon}</ListItemPrefix>
           {menuItem.text}
           {menuItem.suffix && (
             <ListItemSuffix>{menuItem.suffix}</ListItemSuffix>
           )}
         </ListItem>
+        </Link>
       ))}
     </List>
   );
