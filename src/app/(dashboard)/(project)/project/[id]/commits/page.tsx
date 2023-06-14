@@ -5,8 +5,8 @@ import { useGithub } from '@/hooks/useGithub'
 import { useUser } from '@/hooks/useUser'
 import { useParams } from 'next/navigation'
 import { useProject } from '@/hooks/useProject'
-import { Spinner } from '@material-tailwind/react'
 import { CommitRoot } from '@/types/github'
+import { Spinner } from '@/components'
 
 export interface TableRow {
   id: number;
@@ -21,7 +21,7 @@ const CommitsPage = () => {
   const { user } = useUser()
   const { getCommits, loading } = useGithub(user?.githubTokens.at(0)?.access_token ?? "")
 
-  if (!project) return <Spinner className="h-12 w-12" />
+  if (!project) return <Spinner  />
   const [commits, setCommits] = useState([] as CommitRoot[])
   const [tableRows, setTableRows] = useState([] as TableRow[])
   useEffect(() => {
@@ -42,9 +42,10 @@ const CommitsPage = () => {
       }
     })
   }, [])
+  
   return (
     <div>
-      {loading ? <Spinner className='w-12 h-12' /> : <CommitsTable rows={tableRows} />}
+      {loading ?<Spinner  /> : <CommitsTable rows={tableRows} />}
     </div>
   )
 }
