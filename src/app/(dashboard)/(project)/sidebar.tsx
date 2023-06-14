@@ -24,22 +24,25 @@ import { GiPaperTray } from "react-icons/gi";
 import { IoMdSettings } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const menuItems = [
-  {
-    text: "Dashboard",
-    icon: <RiDashboardFill className="h-5 w-5" />,
-  },
-  {
-    text: "Analytics",
-    icon: <SiGoogleanalytics className="h-5 w-5" />,
-  },
+  // {
+  //   text: "Dashboard",
+  //   icon: <RiDashboardFill className="h-5 w-5" />,
+  // },
+  // {
+  //   text: "Analytics",
+  //   icon: <SiGoogleanalytics className="h-5 w-5" />,
+  // },
   {
     text: "GitHub Commits",
     icon: <FaCodeBranch className="h-5 w-5" />,
+    url: "/commits"
   },
   {
-    text: "Posts",
+    text: "Drafts",
     icon: <GiPaperTray className="h-5 w-5" />,
     suffix: (
       <Chip
@@ -50,29 +53,42 @@ const menuItems = [
         className="rounded-full"
       />
     ),
+    url: "/drafts"
   },
   {
     text: "Context",
     icon: <LuBrainCircuit className="h-5 w-5" />,
+    url: "/context"
+
   },
 
   {
     text: "Settings",
     icon: <IoMdSettings className="h-5 w-5" />,
+    url: "/settings"
   },
 ];
 
 function NavList() {
+  const router = useRouter();
+  const param = useParams()
   return (
+
     <List>
       {menuItems.map((menuItem, index) => (
-        <ListItem key={index}>
+        <Link href={`project/${param["id"]}/${menuItem.url}`} key={index}>
+        <ListItem key={index} 
+        // onClick={() => {
+        //   router.push(`project/${param["id"]}/${menuItem.url}`)
+        // }}
+        >
           <ListItemPrefix>{menuItem.icon}</ListItemPrefix>
           {menuItem.text}
           {menuItem.suffix && (
             <ListItemSuffix>{menuItem.suffix}</ListItemSuffix>
           )}
         </ListItem>
+        </Link>
       ))}
     </List>
   );
@@ -97,9 +113,9 @@ export default function Sidebar() {
         </Typography>
       </div> */}
       <div className="hidden lg:block">
-      <NavList />
+        <NavList />
       </div>
-        
+
       <IconButton
         size="sm"
         color="blue-gray"
@@ -117,12 +133,13 @@ export default function Sidebar() {
             exit={{ height: 0 }}
             transition={{ duration: 0.5 }}
             className="overflow-scroll"
+
           >
             <NavList />
           </motion.div>
         )}
       </AnimatePresence>
-       
+
     </Card>
   );
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { Avatar } from '@material-tailwind/react'
 import React, { useState } from 'react'
 import LinkedInPostCreation from './textarea'

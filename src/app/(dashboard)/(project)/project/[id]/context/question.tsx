@@ -3,12 +3,15 @@
 import { useState } from 'react';
 
 type Question = {
+  index: number;
   question: string;
   description: string;
+  answer: string;
+  setAnswer: (index: number, answer: string) => void;
 };
 
-export default function QuestionCard({ question, description }: Question) {
-  const [answer, setAnswer] = useState('');
+export default function QuestionCard({ index, question, description, answer, setAnswer }: Question) {
+
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,10 +27,10 @@ export default function QuestionCard({ question, description }: Question) {
         <textarea
           id="answer"
           value={answer}
-          onChange={(event) => setAnswer(event.target.value)}
+          onChange={(event) => setAnswer(index, event.target.value)}
           className="w-full px-4 py-2 bg-white border border-gray-400 rounded-lg mb-4"
         />
-        <button type="submit" className=" btn btn-primary text-white py-2 px-6 rounded-lg">Submit</button>
+
       </form>
     </div>
   );

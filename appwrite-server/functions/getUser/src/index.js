@@ -37,7 +37,7 @@ module.exports = async function (req, res) {
   const { userId } = JSON.parse(req.payload);
   console.log({ userId }, "userId userId userId");
   const userDoc = await database.getDocument("aperturs", "users", userId);
-  const { githubTokens, linkedlnTokens, ...rest } = userDoc;
+  const { githubTokens, linkedlnTokens, projects, ...rest } = userDoc;
   let finalJson = { ...rest };
   console.log({ userDoc }, "this is the user doc");
   console.log({ githubTokens }, "these are the github tokens");
@@ -53,9 +53,14 @@ module.exports = async function (req, res) {
   const linkedlnTokensPromises = linkedlnTokens.map(async (tokenId) => {
     return await database.getDocument("aperturs", "linkedlnTokens", tokenId);
   });
+
+  const projectsPromises = projects.map(async (id) => {
+    return await database.getDocument("aperturs", "projects", id);
+  });
   const linkedlnTokensJsons = await Promise.all(linkedlnTokensPromises);
+  const projectsPromisesJsons = await Promise.all(projectsPromises);
   console.log({ linkedlnTokensJsons }, "this is linkedln tokens jsons");
   finalJson.linkedlnTokens = linkedlnTokensJsons;
-
+  finalJson.projects = projectsPromisesJsons;
   return res.json(finalJson);
 };

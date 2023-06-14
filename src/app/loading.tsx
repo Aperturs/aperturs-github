@@ -1,14 +1,8 @@
-'use client'
-
-import React, { useRef } from 'react'
-import Lottie,{LottieRefCurrentProps} from "lottie-react";
-import { useLottie } from "lottie-react";
 import { LoadingSpinner } from '@/components/loadingspinner';
 
 
 const Loader = () => {
 
-  const phoneAnimation = useRef<LottieRefCurrentProps>(null)
 
   return (
     <div className='w-screen h-screen flex justify-center items-center'>
@@ -20,6 +14,7 @@ const Loader = () => {
         loop={true}
         animationData={'/animation.json'}
       /> */}
+      <LoadingSpinner color={'fill-blue-400'} />
     </div>
   )
 }

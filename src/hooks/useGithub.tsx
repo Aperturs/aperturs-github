@@ -25,8 +25,18 @@ export const useGithub = (token: string) => {
         })
         )
     }
+    const getRepository = async (owner: string, repo: string) => {
+        return wrapAPICall(async () => await octokit.rest.repos.get(
+            {
+                owner,
+                repo
+            }
+        ))
+    }
+
     return {
         getRepositories,
+        getRepository,
         loading: isAPICallLoading,
         failure: isAPICallFailure,
         error: APICallError,

@@ -61,7 +61,7 @@ module.exports = async function (req, res) {
     "What is your vision for the future of this project?": null,
     "What was the most exciting part of working on this project for you?": null,
   };
-  const uid = uid(15);
+  const projectID = uid(15);
   const questions_answers_json_string = JSON.stringify(questions_answers_json);
   const userDoc = await database.getDocument("aperturs", "users", userId);
   console.log({ userDoc }, "userDoc userDoc userDoc");
@@ -71,21 +71,21 @@ module.exports = async function (req, res) {
     "users",
     userId,
     {
-      projects: [...userDoc.projects, uid],
+      projects: [...userDoc.projects, projectID],
     }
   );
   const projectDoc = await database.createDocument(
     "aperturs",
     "projects",
-    uid,
+    projectID,
     {
-      userId,
+      user_id: userId,
       repo_name,
       repo_description,
       repo_url,
       repo_id,
       questions_answers_json_string,
-      context_id: uid,
+
       commit_count,
     }
   );
