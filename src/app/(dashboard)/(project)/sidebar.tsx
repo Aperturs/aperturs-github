@@ -18,8 +18,7 @@ import {
 
 import { FaCodeBranch } from "react-icons/fa";
 import { LuBrainCircuit } from "react-icons/lu";
-import { RiDashboardFill } from "react-icons/ri";
-import { SiGoogleanalytics } from "react-icons/si";
+
 import { GiPaperTray } from "react-icons/gi";
 import { IoMdSettings } from "react-icons/io";
 import { useEffect, useState } from "react";
@@ -70,14 +69,13 @@ const menuItems = [
 ];
 
 function NavList() {
-  const router = useRouter();
+  // const router = useRouter();
   const param = useParams()
   return (
-
     <List>
       {menuItems.map((menuItem, index) => (
         <Link href={`project/${param["id"]}/${menuItem.url}`} key={index}>
-        <ListItem key={index} 
+        <ListItem  
         // onClick={() => {
         //   router.push(`project/${param["id"]}/${menuItem.url}`)
         // }}

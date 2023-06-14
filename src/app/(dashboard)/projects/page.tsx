@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import GithubCard from "./githubcard";
 import {
   Avatar,
@@ -189,6 +189,7 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
     </>
   );
 };
+
 const ConnnectionButton = () => {
   const onGithubConnect = () => {
     const redirectUrl =
@@ -196,17 +197,16 @@ const ConnnectionButton = () => {
         ? "http://localhost:3000/api/callback/github"
         : "https://ai.aperturs.com/api/callback/github";
     console.log("Github Connect");
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${
-      process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID
-    }&redirect_uri=${encodeURIComponent(
-      redirectUrl
-    )}&scope=${encodeURIComponent("user repo")}`;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID
+      }&redirect_uri=${encodeURIComponent(
+        redirectUrl
+      )}&scope=${encodeURIComponent("user repo")}`;
   };
   const onLinkedLnConnect = () => {
     console.log(" linkedln Connect");
     window.location.href = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process
       .env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID!}&redirect_uri=${process.env
-      .NEXT_PUBLIC_LINKEDIN_REDIRECT_URL!}&scope=r_liteprofile%20r_emailaddress%20w_member_social`;
+        .NEXT_PUBLIC_LINKEDIN_REDIRECT_URL!}&scope=r_liteprofile%20r_emailaddress%20w_member_social`;
   };
 
   const { user } = useUser();
@@ -274,6 +274,12 @@ const page = () => {
     user?.githubTokens.at(0)?.access_token ?? ""
   );
   console.log({ projects }, "projects");
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    setLoaded(true)
+  }, [])
+
 
   const [projectsCardData, setProjectsCardData] = useState([] as ProjectCard[]);
 
@@ -301,6 +307,9 @@ const page = () => {
     };
     getProjectsCard();
   }, [projects]);
+  if (!loaded) {
+    return null
+  }
   if (!user)
     return (
       <div className="w-full h-full flex justify-center items-center">
@@ -316,9 +325,7 @@ const page = () => {
         <ConnnectionButton />
       </div>
       <div
-        className={`grid ${
-          projects || projectsCardData.length > 0 ? "" : "place-items-center"
-        }  xl:grid-cols-4 sm:grid-cols-2 grid-col-1 gap-6`}
+        className={`grid  xl:grid-cols-4 sm:grid-cols-2 grid-col-1 gap-6`}
       >
         {projects && projectsCardData.length > 0 ? (
           <>
