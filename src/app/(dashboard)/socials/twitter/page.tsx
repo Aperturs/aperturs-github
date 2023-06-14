@@ -8,7 +8,7 @@ const AddTwitter = () => {
       <Link href={'/settings'} className="flex items-center space-x-2 my-2 text-sm text-gray-600 hover:text-gray-900">
         <IoIosArrowBack size={20} />
         <span>Back</span>
-    </Link>
+      </Link>
       <h1 className="text-4xl font-medium text-primary">Add Twitter</h1>
       <p className="mt-2 text-gray-500">
         you will need to give your own
@@ -24,22 +24,21 @@ const AddTwitter = () => {
 
 function ApiBox() {
   return (
-    <div className="postShadow mt-8 flex  w-full flex-col rounded-xl p-6">
-      <h1 className="text-2xl font-medium text-primary">API Keys</h1>
-      <p className="mt-2 text-gray-500">Client ID</p>
-      <input
-        className="my-2 h-auto w-full resize-none rounded-xl border border-primary p-3"
-        placeholder="UE05dTJ45jhjTvdEUYQ5aTBIcFo6MTpjaQ"
-      ></input>
-      <p className="mt-2 text-gray-500">Client Secret</p>
-      <input
-        className="h-auto w-full resize-none rounded-xl  
+    <>
+      <div className="postShadow mt-8 flex  w-full flex-col rounded-xl p-6">
+        <h1 className="text-2xl font-medium text-primary">API Keys</h1>
+        <p className="mt-2 text-gray-500">Client ID</p>
+        <input
+          className="my-2 h-auto w-full resize-none rounded-xl border border-primary p-3"
+          placeholder="UE05dTJ45jhjTvdEUYQ5aTBIcFo6MTpjaQ"
+        ></input>
+        <p className="mt-2 text-gray-500">Client Secret</p>
+        <input
+          className="h-auto w-full resize-none rounded-xl  
       border border-primary p-3 "
-        placeholder="NzEjJmLCdQud4JuKSw2QaLjFv4zSTQWtg31hRwrsdSfw3ayqfq"
-      ></input>
-
-      <div className="alert alert-warning my-3 bg-orange-200 ">
-        <div>
+          placeholder="NzEjJmLCdQud4JuKSw2QaLjFv4zSTQWtg31hRwrsdSfw3ayqfq"
+        ></input>
+        <div className="alert alert-warning my-3 bg-orange-200 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 flex-shrink-0 stroke-current"
@@ -54,22 +53,21 @@ function ApiBox() {
             />
           </svg>
           <div>
-          <span className="font-bold">Bring your Own APIs</span>
-          <span className="m-1">
-            Due to Twitter new APIs rules, we are only allowing user who bring
-            their own Api Keys
-          </span>
+            <span className="font-bold">Bring your Own APIs</span>
+            <span className="m-1">
+              Due to Twitter new APIs rules, we are only allowing user who bring
+              their own Api Keys
+            </span>
           </div>
         </div>
 
       </div>
       <div className="w-full flex justify-end">
-      <button className="btn btn-primary sm:w-56 w-24  text-white rounded-xl px-4 py-2 mt-4">
-        Connect
-      </button>
+        <button className="btn btn-primary sm:w-56 w-24  text-white rounded-xl px-4 py-2 mt-4">
+          Connect
+        </button>
       </div>
-      
-    </div>
+    </>
   );
 }
 
