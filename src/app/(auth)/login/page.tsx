@@ -6,6 +6,7 @@ import { redirect, useRouter } from "next/navigation";
 import { LoadingSpinner } from "@/components/loadingspinner";
 import toast from "react-hot-toast";
 import { features } from "process";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -124,9 +125,11 @@ export default function Login() {
           >
             {loading ? <LoadingSpinner color={"fill-blue-600"} /> : "Login"}
           </button>
+          <Link href="/signup">
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-            Forgot Password ?
+            Create an Account
           </span>
+          </Link>
         </form>
       </div>
     </div>
