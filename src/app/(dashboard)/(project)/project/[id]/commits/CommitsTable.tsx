@@ -4,6 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, Typography, Checkbox } from "@material-tailwind/react";
 import { TableRow } from "./page";
+import { useParams } from "next/navigation";
+import { useProject } from "@/hooks/useProject";
+import { useUser } from "@/hooks/useUser";
+import { toast } from "react-hot-toast";
 
 
 
@@ -13,7 +17,12 @@ const staggerVariants = {
 };
 
 export default function CommitsTable({ rows }: { rows: TableRow[] }) {
+  const { id } = useParams()
+  const { project } = useProject(id)
+  const {user} = useUser()
+  
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
 
   const toggleSelectAll = () => {
     if (selectedRows.length === rows.length) {
@@ -36,7 +45,31 @@ export default function CommitsTable({ rows }: { rows: TableRow[] }) {
   return (
     <Card className="p-4 shadow-sm lg:w-[70vw] w-[90vw] ">
       <Typography variant="h5">Commits</Typography>
+      <button className="btn btn-primary"
+      onClick={async () =>  {
+        const commits = selectedRows.map((row) => rows[row].message)
+        alert(commits)
+        const res =  await fetch("/api/post",{
+          method: "POST",
+          body: JSON.stringify({
+            openai_token: user?.openai_token,
+            project_id: project?.id,
+            commits: commits,
+            questions_answers_json_string: project?.questions_answers_json_string
+        })
+      })
+      const data = await res.json()
+      console.log(data)
+      // toast.success("Post created successfully")
+      toast(data,{
+        duration: 10000
+      })
+      localStorage.setItem("post", JSON.stringify(data))
 
+    }}
+      >
+        Create Post
+      </button>
       <div className="flex items-center mb-4">
         <Checkbox
           color="blue"

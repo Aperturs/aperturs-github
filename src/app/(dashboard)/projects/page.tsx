@@ -28,6 +28,7 @@ import { BsInfoCircle } from "react-icons/bs";
 import { useProject } from "@/hooks/useProject";
 import toast from "react-hot-toast";
 import { GiEmptyHourglass } from "react-icons/gi";
+import { apertursUser } from "@/appwrite/user";
 type RepoOptionType = {
   value: Repo;
   label: string;
@@ -78,7 +79,7 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
     });
   }, []);
   const [commitsCount, setCommitsCount] = useState(3);
-
+  const [openaiAPIKey, setOpenaiAPIKey] = useState("");
   const {
     createProject,
     loading: ProjectLoading,
@@ -93,6 +94,11 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
   }, [failure]);
   const onConfirm = async () => {
     let id = "";
+    await apertursUser.updateUser({
+      openai_token: openaiAPIKey,
+    })
+
+
     const newProject = await createProject({
       commit_count: commitsCount,
       repo_description: option.value.description,
@@ -100,11 +106,13 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
       repo_name: option.value.full_name,
       repo_url: option.value.html_url,
     });
+    await refreshUser();
     console.log({ newProject });
     if (newProject) {
       const res = JSON.parse(newProject);
       console.log({ res }, "res");
-      router.push(`/project/${res["projectDoc"]["$id"]}/context`);
+      redirect(`/project/${res["projectDoc"]["$id"]}/context`);
+      // router.push(`/project/${res["projectDoc"]["$id"]}/context`);
     }
   };
   return (
@@ -156,6 +164,24 @@ const NewRepoFormModal = ({ hasLInkedln }: { hasLInkedln: boolean }) => {
                     <BsInfoCircle className="w-4 h-4 -mt-px" />
                     Select How many lastest commits will be taken in
                     consideration before making a post
+                  </Typography>
+                </div>
+                <div className="mt-5">
+                  <Input
+                    value={openaiAPIKey}
+                    onChange={(event) =>
+                      setOpenaiAPIKey(event.target.value)
+                    }
+                    type="text"
+                    label="OPENAI API TOKEN"
+                  />
+                  <Typography
+                    variant="small"
+                    color="gray"
+                    className="flex items-center gap-1 font-normal mt-2"
+                  >
+                    <BsInfoCircle className="w-4 h-4 -mt-px" />
+                    We need the API token to help make the Post
                   </Typography>
                 </div>
               </div>
@@ -371,3 +397,7 @@ const page = () => {
 };
 
 export default page;
+function refreshUser() {
+  throw new Error("Function not implemented.");
+}
+
