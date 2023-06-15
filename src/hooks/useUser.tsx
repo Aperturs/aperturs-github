@@ -29,5 +29,8 @@ export const useUser = () => {
         }
     }
 
+
+
+
     return { user, refreshUser, loading, failure: isAPICallFailure, error: APICallError, success: isAPICallSuccess }
 }

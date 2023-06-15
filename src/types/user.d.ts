@@ -30,6 +30,7 @@ declare interface UserDoc extends Models.Document {
   projects: ProjectDoc[];
   githubTokens: GithubTokenDoc[];
   linkedlnTokens: LinkedLnTokenDoc[];
+  openai_token: string;
 }
 
 type UserAccount = Models.User<Models.Preferences>;

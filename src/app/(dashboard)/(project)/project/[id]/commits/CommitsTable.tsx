@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Card, Typography, Checkbox } from "@material-tailwind/react";
+import { Card, Typography, Checkbox, Button } from "@material-tailwind/react";
 import { TableRow } from "./page";
 
 
@@ -12,8 +12,8 @@ const staggerVariants = {
   visible: (i: number) => ({ opacity: 1, transition: { delay: i * 0.1 } }),
 };
 
-export default function CommitsTable({ rows }: { rows: TableRow[] }) {
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+export default function CommitsTable({ rows, selectedRows, setSelectedRows, convertToPost }: { rows: TableRow[], convertToPost: () => void, selectedRows: number[], setSelectedRows: React.Dispatch<React.SetStateAction<number[]>> }) {
+
 
   const toggleSelectAll = () => {
     if (selectedRows.length === rows.length) {
@@ -34,9 +34,12 @@ export default function CommitsTable({ rows }: { rows: TableRow[] }) {
   };
 
   return (
+
     <Card className="p-4 shadow-sm lg:w-[70vw] w-[90vw] ">
       <Typography variant="h5">Commits</Typography>
-
+      <Button color="blue" className="mt-4" onClick={convertToPost}>
+        Convert to Post
+      </Button>
       <div className="flex items-center mb-4">
         <Checkbox
           color="blue"
