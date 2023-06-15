@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Card, Typography, Checkbox, Button } from "@material-tailwind/react";
+import { Card, Typography, Checkbox } from "@material-tailwind/react";
 import { TableRow } from "./page";
+import { useParams } from "next/navigation";
+import { useProject } from "@/hooks/useProject";
+import { useUser } from "@/hooks/useUser";
+import { toast } from "react-hot-toast";
 
 
 
@@ -12,7 +16,12 @@ const staggerVariants = {
   visible: (i: number) => ({ opacity: 1, transition: { delay: i * 0.1 } }),
 };
 
-export default function CommitsTable({ rows, selectedRows, setSelectedRows, convertToPost }: { rows: TableRow[], convertToPost: () => void, selectedRows: number[], setSelectedRows: React.Dispatch<React.SetStateAction<number[]>> }) {
+export default function CommitsTable({ rows }: { rows: TableRow[] }) {
+  const { id } = useParams()
+  const { project } = useProject(id)
+  const {user} = useUser()
+  
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
 
   const toggleSelectAll = () => {
@@ -34,12 +43,33 @@ export default function CommitsTable({ rows, selectedRows, setSelectedRows, conv
   };
 
   return (
-
     <Card className="p-4 shadow-sm lg:w-[70vw] w-[90vw] ">
       <Typography variant="h5">Commits</Typography>
-      <Button color="blue" className="mt-4" onClick={convertToPost}>
-        Convert to Post
-      </Button>
+      <button className="btn btn-primary"
+      onClick={async () =>  {
+        const commits = selectedRows.map((row) => rows[row].message)
+        alert(commits)
+        const res =  await fetch("/api/post",{
+          method: "POST",
+          body: JSON.stringify({
+            openai_token: user?.openai_token,
+            project_id: project?.id,
+            commits: commits,
+            questions_answers_json_string: project?.questions_answers_json_string
+        })
+      })
+      const data = await res.json()
+      console.log(data)
+      // toast.success("Post created successfully")
+      toast(data,{
+        duration: 10000
+      })
+      localStorage.setItem("post", JSON.stringify(data))
+
+    }}
+      >
+        Create Post
+      </button>
       <div className="flex items-center mb-4">
         <Checkbox
           color="blue"

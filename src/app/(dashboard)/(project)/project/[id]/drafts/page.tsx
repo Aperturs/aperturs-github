@@ -1,7 +1,17 @@
+'use client'
+
 import PostCard from "@/app/(dashboard)/drafts/postcard";
-import React from "react";
+import React, { useEffect } from "react";
 
 const ProjectPosts = () => {
+
+  const [posts, setPosts] = React.useState([] as any[]);
+
+  useEffect(() => {
+    localStorage.getItem("posts") && setPosts(JSON.parse(localStorage.getItem("posts") ?? ""))
+  }, []);
+
+
   return (
     <div>
       <div className="flex flex-col  items-center ">
@@ -10,9 +20,11 @@ const ProjectPosts = () => {
           <button className="btn btn-primary text-white px-6">New Post</button>
         </div>
         <div className="grid xl:grid-cols-3 sm:grid-cols-2 grid-col-1 gap-6">
+
           <PostCard id={1} />
           <PostCard id={2} />
           <PostCard id={3} />
+
         </div>
       </div>
     </div>
